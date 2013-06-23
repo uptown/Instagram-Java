@@ -168,8 +168,8 @@ public class Media extends InstagramModel {
 	protected List<Comment> comments;
 	
 	/**
-	 * List of lazyloaded User object for users who
-	 * represents liked the media
+	 * List of lazyloaded User objects for users who
+	 * liked the media
 	 */
 	protected List<User> likers;
 	
@@ -217,7 +217,7 @@ public class Media extends InstagramModel {
      * Makes a new Media object out of a JSONObject
      * @param obj json object used to create this media
      * @param accessToken API access token used for lazyloaded api requests
-     * @throws InstagramException
+     * @throws JSONException
      */
 	public Media(JSONObject obj, String accessToken) throws JSONException {
 		super(obj, accessToken);
@@ -548,7 +548,7 @@ public class Media extends InstagramModel {
 	    /**
 	     * Makes a new Image object out of a JSONObject
 	     * @param obj json object used to create this image
-	     * @throws InstagramException
+	     * @throws JSONException
 	     */
 		public Image(JSONObject obj) throws JSONException {
 			this.setUri(obj.getString("url"));
@@ -661,7 +661,7 @@ public class Media extends InstagramModel {
 	    /**
 	     * Makes a new caption object out of a JSONObject
 	     * @param captionObject json object used to create this caption
-	     * @throws InstagramException
+	     * @throws JSONException
 	     */
 		public Caption(JSONObject captionObject) throws JSONException {
 			this.setId(captionObject.getString("id"));
@@ -748,7 +748,7 @@ public class Media extends InstagramModel {
 	}
 
 	/**
-	 * Object for a media caption
+	 * Object for a user photo tag
 	 * with the JSON representation
 	 * <pre>
 	 *	 {
