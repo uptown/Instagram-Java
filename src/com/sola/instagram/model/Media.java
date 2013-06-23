@@ -45,6 +45,18 @@ import com.sola.instagram.util.UriConstructor;
  * 			"tags":["", ""],
  * 			"type":"image",
  * 			"location":null,
+ *		    "users_in_photo": [{
+ *		        "user": {
+ *		            "username": "",
+ *		            "full_name": "",
+ *		            "id": "",
+ *		            "profile_picture": ""
+ *		        },
+ *		        "position": {
+ *		            "x": 0,
+ *		            "y": 0
+ *		        }
+ *		    }], 
  * 			"comments": {
  * 				"count":0,
  * 				"data":[ {
@@ -192,6 +204,11 @@ public class Media extends InstagramModel {
 	protected Boolean userHasLikedMedia;
 
 	/**
+	 * Users tagged in photo
+	 */
+	protected List<UserPhotoTag> usersInPhoto;
+	
+	/**
 	 * Used to construct formatted api urls
 	 */
 	UriConstructor uriConstructor;
@@ -223,11 +240,25 @@ public class Media extends InstagramModel {
 			this.setLocation(new Location(obj.getJSONObject("location"), accessToken));
 		
 		ArrayList<String> tags = new ArrayList<String>();
-		JSONArray tagStrings = obj.getJSONArray("tags");
+		JSONArray tagStrings   = obj.getJSONArray("tags");
 		for(int i = 0; i < tagStrings.length(); i++) {
 			tags.add(tagStrings.getString(i));
 		}
 		this.setTags(tags);
+
+		ArrayList<UserPhotoTag> userPhotoTags = new ArrayList<UserPhotoTag>();
+		JSONArray jsonUserPhotoTags = obj.optJSONArray("users_in_photo");
+		if(jsonUserPhotoTags != null) {
+			for(int i = 0; i < jsonUserPhotoTags.length(); i++) {
+				userPhotoTags.add(
+						new UserPhotoTag(jsonUserPhotoTags.getJSONObject(i))
+				);
+			}
+			this.setUsersInPhoto(userPhotoTags);
+		} else {
+			this.setUsersInPhoto(new ArrayList<UserPhotoTag>());
+		}
+		
 		uriConstructor = new UriConstructor(getAccessToken());
 	}
 	
@@ -461,6 +492,18 @@ public class Media extends InstagramModel {
 		this.tags = tags;
 	}
 
+    /**
+     * Returns a list of tags (as strings) used in this media
+     * @return A list of tags (as strings) used in this media
+     */
+	public List<UserPhotoTag> getUsersInPhoto() {
+		return this.usersInPhoto;
+	}
+
+	protected void setUsersInPhoto(List<UserPhotoTag> users) {
+		this.usersInPhoto = users;
+	}
+	
     /**
      * Checks if two media objects are equal
      * @param o The object to be compared 
@@ -703,5 +746,64 @@ public class Media extends InstagramModel {
 			return ((Media.Caption)o).getId().equals(getId());
 		}		
 	}
-	
+
+	/**
+	 * Object for a media caption
+	 * with the JSON representation
+	 * <pre>
+	 *	 {
+     *       "user": {
+     *           "username": "kevin",
+     *           "full_name": "Kevin S",
+     *           "id": "3",
+     *           "profile_picture": "..."
+     *       },
+     *       "position": {
+     *           "x": 0.315,
+     *           "y": 0.9111
+     *       }
+     *   }
+	 * </pre>
+	 * @author Sola Ogunsakin
+	 * @version 2012-08-22
+	 */
+	public class UserPhotoTag {
+		double x;
+		double y;
+		User user;
+
+	    /**
+	     * Makes a new UserPhotoTag object out of a JSONObject
+	     * @param obj json representation of the tag
+	     * @throws JSONException
+	     */
+		public UserPhotoTag(JSONObject obj) throws JSONException {
+			JSONObject position = obj.getJSONObject("position");
+			this.setX(position.getDouble("x"));
+			this.setY(position.getDouble("y"));
+			this.setUser(new User(obj.getJSONObject("user"), accessToken));			
+		}
+		
+		public double getX() {
+			return x;
+		}
+		
+		private void setX(double x) {
+			this.x = x;
+		}
+		public double getY() {
+			return y;
+		}
+		
+		private void setY(double y) {
+			this.y = y;
+		}
+		public User getUser() {
+			return user;
+		}
+		
+		private void setUser(User user) {
+			this.user = user;
+		}
+	}
 }

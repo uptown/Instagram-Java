@@ -11,15 +11,15 @@ import com.sola.instagram.util.UriConstructor;
 
 
 public class User extends InstagramModel {
-	int id;
-	String userName;
-	String fullName;
-	String profilePictureURI;
-	String bio;
-	String website;
-	int mediaCount = -1;
-	int followerCount = -1;
-	int followingCount = -1;
+	protected int id;
+	protected String userName;
+	protected String fullName;
+	protected String profilePictureURI;
+	protected String bio;
+	protected String website;
+	protected int mediaCount = -1;
+	protected int followerCount = -1;
+	protected int followingCount = -1;
 
 	public User(JSONObject obj, String accessToken) throws JSONException {
 		super(obj, accessToken);
