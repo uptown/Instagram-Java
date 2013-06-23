@@ -5,7 +5,7 @@ Java wrapper for Instagram's API v1
 ## Setup
 Include the `/bin/java-instagram.jar` file in your project.
 
-This library had a dependency on Apache HttpClient 4.2.1. It can be downloaded [here](http://hc.apache.org/downloads.cgi).
+This library has a dependence on Apache HttpClient 4.2.1. It can be downloaded [here](http://hc.apache.org/downloads.cgi).
 
 ## Authentication
  Firstly, build the authorization URL
@@ -16,12 +16,13 @@ String authUrl = auth.setRedirectUri("your_redirect_url")
   			 	 .setClientId("your_client_id")
   			 	 .getAuthorizationUri();
 ```
- After the user has authorized the app, begin the session by passing the code given in the callback URL
+ After the user has authorized the app, get the access token by passing the code given in the callback URL. 
 ```java
-InstagramSession session = auth.build("code");
+  AccessToken token = auth.build("code");
 ```
- You're all set
+ Create the session using the access token and you're all set
 ```java 
+  InstagramSession session = new InstagramSession(token);
   User rihanna = session.searchUsersByName("badgalriri").get(0);
 ``` 
 ## Endpoint Examples
@@ -79,6 +80,10 @@ Results are paginated, so the required page must also be indicated. The page num
   // POST /users/3/relationship
   session.modifyRelationship(targetUserId, Relationship.Action.UNFOLLOW)
 ```
+## License
+Copyright (c) 2013 Sola Ogunsakin
+Licensed under the MIT license.
+
 ## About me
 * Email : juniorsola@yahoo.com
 * LinkedIn : http://ca.linkedin.com/pub/sola-ogunsakin/45/a5/5a0/
