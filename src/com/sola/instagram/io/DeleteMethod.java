@@ -17,22 +17,18 @@ public class DeleteMethod extends APIMethod {
 	
 	public DeleteMethod() {
 		super();
-		this.type = "GET";
+		this.type   = "GET";
 		this.client = new DefaultHttpClient();
 	}
 	
 	@Override
-	protected InputStream performRequest() {
+	protected InputStream performRequest() throws Exception {
 		HttpResponse response;
-		BufferedReader rd = null;
-		HttpDelete post = new HttpDelete(this.methodUri);
+		BufferedReader rd  = null;
+		HttpDelete post    = new HttpDelete(this.methodUri);
 		InputStream stream = null;
-		try {
-			response = client.execute(post);
-			stream = response.getEntity().getContent();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}  
+		response = client.execute(post);
+		stream = response.getEntity().getContent();
 		return stream;
 	}
 

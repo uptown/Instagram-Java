@@ -52,7 +52,7 @@ public class InstagramAuthentication {
 				UriFactory.Auth.USER_AUTHORIZATION, args, false);
 	}
 
-	public AccessToken build(String code) throws InstagramException {
+	public AccessToken build(String code) throws Exception {
 		if (getClientSecret() == null || getClientId() == null
 				|| getRedirectUri() == null) {
 			throw new InstagramException("Please make sure that the"

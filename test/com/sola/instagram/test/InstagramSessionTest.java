@@ -22,7 +22,7 @@ public class InstagramSessionTest {
 	}
 
 	@Test
-	public void testGetUserById() throws InstagramException {
+	public void testGetUserById() throws Exception {
 		/*
 		 * Test that no Exception is thrown for a valid user id
 		 */
@@ -30,7 +30,7 @@ public class InstagramSessionTest {
 	}
 
 	@Test
-	public void testGetRecentPublishedMedia() throws InstagramException {
+	public void testGetRecentPublishedMedia() throws Exception {
 		InstagramSession session = this.getNewSession();
 
 		/*
@@ -49,7 +49,7 @@ public class InstagramSessionTest {
 	}
 
 	@Test
-	public void testGetFeed() throws InstagramException {
+	public void testGetFeed() throws Exception, JSONException {
 		InstagramSession session = this.getNewSession();
 
 		/*
@@ -68,7 +68,7 @@ public class InstagramSessionTest {
 	}
 
 	@Test
-	public void testGetLikedMedia() throws InstagramException {
+	public void testGetLikedMedia() throws Exception {
 		InstagramSession session = this.getNewSession();
 
 		/*
@@ -87,7 +87,7 @@ public class InstagramSessionTest {
 	}
 
 	@Test
-	public void testGetMedia() throws InstagramException {
+	public void testGetMedia() throws Exception {
 		/*
 		 * Test that no Exception is thrown for a valid media id
 		 */
@@ -95,7 +95,7 @@ public class InstagramSessionTest {
 	}
 
 	@Test
-	public void testSearchMedia() throws InstagramException {
+	public void testSearchMedia() throws Exception {
 		/*
 		 * Test that no Exception is thrown
 		 */
@@ -103,7 +103,7 @@ public class InstagramSessionTest {
 	}
 
 	@Test
-	public void testGetPopularMedia() throws InstagramException {
+	public void testGetPopularMedia() throws Exception {
 		/*
 		 * Test that no Exception is thrown
 		 */
@@ -111,7 +111,7 @@ public class InstagramSessionTest {
 	}
 
 	@Test
-	public void testSearchUsersByName() throws InstagramException {
+	public void testSearchUsersByName() throws Exception {
 		/*
 		 * Test that no Exception is thrown
 		 */
@@ -119,7 +119,7 @@ public class InstagramSessionTest {
 	}
 
 	@Test
-	public void testGetFollows() throws InstagramException {
+	public void testGetFollows() throws Exception {
 		InstagramSession session = this.getNewSession();
 
 		/*
@@ -138,7 +138,7 @@ public class InstagramSessionTest {
 	}
 
 	@Test
-	public void testGetFollowers() throws InstagramException {
+	public void testGetFollowers() throws Exception {
 		InstagramSession session = this.getNewSession();
 
 		/*
@@ -157,7 +157,7 @@ public class InstagramSessionTest {
 	}
 
 	@Test
-	public void testGetFollowRequests() throws InstagramException {
+	public void testGetFollowRequests() throws Exception {
 		/*
 		 * Test that no Exception is thrown
 		 */
@@ -165,7 +165,7 @@ public class InstagramSessionTest {
 	}
 
 	@Test
-	public void testGetRelationshipWith() throws InstagramException {
+	public void testGetRelationshipWith() throws Exception {
 		/*
 		 * Test that no Exception is thrown for a valid user id
 		 */
@@ -173,7 +173,7 @@ public class InstagramSessionTest {
 	}
 
 	@Test
-	public void testModifyRelationship() throws InstagramException {
+	public void testModifyRelationship() throws Exception {
 		/*
 		 * Test that no Exception is thrown for a valid user id
 		 */
@@ -188,7 +188,7 @@ public class InstagramSessionTest {
 	}
 
 	@Test
-	public void testPostComment() throws InstagramException {
+	public void testPostComment() throws Exception {
 		/*
 		 * Test that no Exception is thrown for a valid user id
 		 */
@@ -199,7 +199,7 @@ public class InstagramSessionTest {
 	}
 
 	@Test
-	public void testRemoveComment() throws InstagramException,
+	public void testRemoveComment() throws Exception,
 			InterruptedException {
 		Random rand = new Random(19580427);
 		InstagramSession session = getNewSession();
@@ -213,7 +213,7 @@ public class InstagramSessionTest {
 	}
 
 	@Test
-	public void testLikingAndUnlikingMedia() throws InstagramException {
+	public void testLikingAndUnlikingMedia() throws Exception {
 		Random rand = new Random(19580427);
 		InstagramSession session = getNewSession();
 		Media media = session.getPopularMedia().get(rand.nextInt() % 10);
@@ -222,7 +222,7 @@ public class InstagramSessionTest {
 	}
 
 	@Test
-	public void testGetTag() throws InstagramException {
+	public void testGetTag() throws Exception {
 		/*
 		 * Test that no Exception is thrown for a tag
 		 */
@@ -230,7 +230,7 @@ public class InstagramSessionTest {
 	}
 
 	@Test
-	public void testGetRecentMediaForTag() throws InstagramException {
+	public void testGetRecentMediaForTag() throws Exception {
 		InstagramSession session = getNewSession();
 		/*
 		 * Test for an invalid page number it should throw an InstagramException
@@ -248,7 +248,7 @@ public class InstagramSessionTest {
 	}
 
 	@Test
-	public void testSearchTags() throws InstagramException {
+	public void testSearchTags() throws Exception {
 		/*
 		 * Test that no Exception is thrown
 		 */
@@ -256,7 +256,7 @@ public class InstagramSessionTest {
 	}
 
 	@Test
-	public void testGetLocation() throws InstagramException {
+	public void testGetLocation() throws Exception {
 		/*
 		 * Test that no Exception is thrown
 		 */
@@ -264,7 +264,7 @@ public class InstagramSessionTest {
 	}
 
 	@Test
-	public void testGetRecentMediaFromLocation() throws InstagramException {
+	public void testGetRecentMediaFromLocation() throws Exception {
 		InstagramSession session = getNewSession();
 		/*
 		 * Test for an invalid page number it should throw an InstagramException

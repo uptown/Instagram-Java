@@ -21,29 +21,25 @@ public class User extends InstagramModel {
 	int followerCount = -1;
 	int followingCount = -1;
 
-	public User(JSONObject obj, String accessToken) throws InstagramException {
+	public User(JSONObject obj, String accessToken) throws JSONException {
 		super(obj, accessToken);
-		try{
-			setId(obj.getInt("id"));
-			setUserName(obj.getString("username"));
-			setFullName(obj.getString("full_name"));
-			setProfilePictureURI(obj.getString("profile_picture"));
-			
-			setWebsite(obj.optString("website"));
-			setBio(obj.optString("bio"));
-			
-			if(obj.has("counts")) {
-				JSONObject counts = obj.getJSONObject("counts");
-				setFollowerCount(counts.getInt("followed_by"));
-				setFollowingCount(counts.getInt("follows"));
-				setMediaCount(counts.getInt("media"));			
-			} else {
-				setFollowerCount(-1);
-				setFollowingCount(-1);
-				setMediaCount(-1);		
-			}
-		} catch(JSONException e) {
-			throw new InstagramException("JSON parsing error");
+		setId(obj.getInt("id"));
+		setUserName(obj.getString("username"));
+		setFullName(obj.getString("full_name"));
+		setProfilePictureURI(obj.getString("profile_picture"));
+		
+		setWebsite(obj.optString("website"));
+		setBio(obj.optString("bio"));
+		
+		if(obj.has("counts")) {
+			JSONObject counts = obj.getJSONObject("counts");
+			setFollowerCount(counts.getInt("followed_by"));
+			setFollowingCount(counts.getInt("follows"));
+			setMediaCount(counts.getInt("media"));			
+		} else {
+			setFollowerCount(-1);
+			setFollowingCount(-1);
+			setMediaCount(-1);		
 		}
 	}
 
@@ -79,7 +75,7 @@ public class User extends InstagramModel {
 		this.profilePictureURI = profilePictureURI;
 	}
 	
-	public String getBio() throws JSONException, InstagramException {
+	public String getBio() throws Exception {
 		if(website == null) {
 			refreshObject();
 		}
@@ -90,7 +86,7 @@ public class User extends InstagramModel {
 		this.bio = bio;
 	}
 	
-	public String getWebsite() throws JSONException, InstagramException {
+	public String getWebsite() throws Exception {
 		if(website == null) {
 			refreshObject();
 		}
@@ -101,7 +97,7 @@ public class User extends InstagramModel {
 		this.website = website;
 	}
 	
-	public int getMediaCount() throws InstagramException {
+	public int getMediaCount() throws Exception {
 		if(this.followingCount == -1) 
 			refreshObject();
 		return mediaCount;
@@ -111,7 +107,7 @@ public class User extends InstagramModel {
 		this.mediaCount = mediaCount;
 	}
 
-	public int getFollowerCount() throws InstagramException {
+	public int getFollowerCount() throws Exception {
 		if(this.followerCount == -1) 
 			refreshObject();
 		return followerCount;
@@ -121,7 +117,7 @@ public class User extends InstagramModel {
 		this.followerCount = followerCount;
 	}
 	
-	public int getFollowingCount() throws InstagramException {
+	public int getFollowingCount() throws Exception {
 		if(this.followingCount == -1) 
 			refreshObject();
 		return followingCount;
@@ -131,14 +127,15 @@ public class User extends InstagramModel {
 		this.followingCount = followingCount;
 	}
 	
-	private void refreshObject() throws InstagramException {
+	private void refreshObject() throws Exception {
 		try {
 			UriConstructor uriConstructor = new UriConstructor(getAccessToken());
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			map.put("user_id", getId());
-			
+			String uri = uriConstructor.constructUri(
+								UriFactory.Users.GET_DATA, map, true);
 			JSONObject userObject = (new GetMethod()
-									.setMethodURI(uriConstructor.constructUri(UriFactory.Users.GET_DATA, map, true))
+									.setMethodURI(uri)
 									).call().getJSON();
 			
 			if(userObject.has("data")) {

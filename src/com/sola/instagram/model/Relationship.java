@@ -22,16 +22,11 @@ public class Relationship extends InstagramModel {
 	IncomingStatus incomingStatus;
 	boolean targetUserIsPrivate;
 
-	public Relationship(JSONObject obj, String accessToken) throws InstagramException {
+	public Relationship(JSONObject obj, String accessToken) throws JSONException {
 		super(obj, accessToken);
-		try {
-			setOutgoingStatus(obj.getString("outgoing_status"));
-			setIncomingStatus(obj.getString("incoming_status"));
-			this.targetUserIsPrivate = obj.getBoolean("target_user_is_private");
-			
-		} catch(JSONException e) {
-			throw new InstagramException("JSON parsing error");
-		}
+		setOutgoingStatus(obj.getString("outgoing_status"));
+		setIncomingStatus(obj.getString("incoming_status"));
+		this.targetUserIsPrivate = obj.getBoolean("target_user_is_private");
 	}
 	
 	public OutgoingStatus getOutgoingStatus() {

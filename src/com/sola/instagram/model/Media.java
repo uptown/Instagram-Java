@@ -112,7 +112,7 @@ public class Media extends InstagramModel {
 	 * Types of image filters
 	 */
 	public static enum Filters {
-		TOASTER, HUDSON, SIERRA, INKWELL, NORMAL, AMARO, RISE, VALENCIA
+		TOASTER, HUDSON, SIERRA, INKWELL, NORMAL, AMARO, RISE, VALENCIA, NONE
 	}
 	
 	/** 
@@ -202,39 +202,32 @@ public class Media extends InstagramModel {
      * @param accessToken API access token used for lazyloaded api requests
      * @throws InstagramException
      */
-	public Media(JSONObject obj, String accessToken) throws InstagramException {
+	public Media(JSONObject obj, String accessToken) throws JSONException {
 		super(obj, accessToken);
-		try {
-			
-			if(!obj.isNull("caption")) 
-				this.setCaption(this.new Caption(obj.getJSONObject("caption")));			
-	
-			this.setCreatedTimestamp(obj.getString("created_time"));
-			this.setFilter(obj.getString("filter"));
-			this.setLink(obj.optString("link"));
-			this.setId(obj.getString("id"));
-			this.setType(obj.getString("type"));
-			this.setUser(new User(obj.getJSONObject("user"), accessToken));
-			this.setUserHasLikedMedia(obj.getBoolean("user_has_liked"));
-			
-		 	JSONObject images = obj.getJSONObject("images");
-		 	this.setLowResolutionImage(this.new Image(images.getJSONObject("low_resolution")));
-		 	this.setThumbnailImage(this.new Image(images.getJSONObject("thumbnail")));
-		 	this.setStandardResolutionImage(this.new Image(images.getJSONObject("standard_resolution")));
-			
-			if(!obj.isNull("location"))
-				this.setLocation(new Location(obj.getJSONObject("location"), accessToken));
-			
-			ArrayList<String> tags = new ArrayList<String>();
-			JSONArray tagStrings = obj.getJSONArray("tags");
-			for(int i = 0; i < tagStrings.length(); i++) {
-				tags.add(tagStrings.getString(i));
-			}
-			this.setTags(tags);
-			
-		} catch(JSONException e) {
-			throw new InstagramException("JSON parsing error");
+		if(!obj.isNull("caption")) 
+			this.setCaption(this.new Caption(obj.getJSONObject("caption")));			
+		this.setCreatedTimestamp(obj.getString("created_time"));
+		this.setFilter(obj.optString("filter"));
+		this.setLink(obj.optString("link"));
+		this.setId(obj.getString("id"));
+		this.setType(obj.getString("type"));
+		this.setUser(new User(obj.getJSONObject("user"), accessToken));
+		this.setUserHasLikedMedia(obj.getBoolean("user_has_liked"));
+		
+	 	JSONObject images = obj.getJSONObject("images");
+	 	this.setLowResolutionImage(this.new Image(images.getJSONObject("low_resolution")));
+	 	this.setThumbnailImage(this.new Image(images.getJSONObject("thumbnail")));
+	 	this.setStandardResolutionImage(this.new Image(images.getJSONObject("standard_resolution")));
+		
+		if(!obj.isNull("location"))
+			this.setLocation(new Location(obj.getJSONObject("location"), accessToken));
+		
+		ArrayList<String> tags = new ArrayList<String>();
+		JSONArray tagStrings = obj.getJSONArray("tags");
+		for(int i = 0; i < tagStrings.length(); i++) {
+			tags.add(tagStrings.getString(i));
 		}
+		this.setTags(tags);
 		uriConstructor = new UriConstructor(getAccessToken());
 	}
 	
@@ -288,24 +281,21 @@ public class Media extends InstagramModel {
      * Lazy-loads and returns a list of comments for this media
      * @return A list of lazy-loaded comments for this media 
      */
-	public List<Comment> getComments() throws  InstagramException {
+	public List<Comment> getComments() throws Exception {
 		if(comments == null) {
-			try{
-				HashMap<String, Object> map = new HashMap<String, Object>();
-				map.put("media_id", getId());
-				JSONObject object = (new GetMethod()
-									.setMethodURI(uriConstructor.constructUri(UriFactory.Comments.GET_MEDIA_COMMENTS, map, true))
-									)
-									.call().getJSON();
-				ArrayList<Comment> comments =  new ArrayList<Comment>();
-				JSONArray commentObjects = object.getJSONArray("data");
-				for(int i = 0; i < commentObjects.length(); i++) {
-					comments.add(new Comment(commentObjects.getJSONObject(i), accessToken));
-				}
-				setComments(comments);	
-			} catch(JSONException e) {
-				throw new InstagramException("JSON parsing error");
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("media_id", getId());
+			String uri = uriConstructor.constructUri(
+								UriFactory.Comments.GET_MEDIA_COMMENTS, map, true);
+			JSONObject object = (new GetMethod()
+								.setMethodURI(uri)
+								).call().getJSON();
+			ArrayList<Comment> comments =  new ArrayList<Comment>();
+			JSONArray commentObjects = object.getJSONArray("data");
+			for(int i = 0; i < commentObjects.length(); i++) {
+				comments.add(new Comment(commentObjects.getJSONObject(i), accessToken));
 			}
+			setComments(comments);	
 		}
 		return comments;
 	}
@@ -429,14 +419,17 @@ public class Media extends InstagramModel {
      * Lazy-Loads and returns a list of users who have liked this media
      * @return A lazy-loaded list of users who have liked this media
      */
-	public List<User> getLikers() throws InstagramException {
+	public List<User> getLikers() throws Exception {
 		if(likers == null) {
 			try {
 				
 				HashMap<String, Object> map = new HashMap<String, Object>();
 				map.put("media_id", getId());
-				JSONObject object = (new GetMethod()
-									.setMethodURI(uriConstructor.constructUri(UriFactory.Likes.GET_LIKERS, map, true))
+				String uri = uriConstructor.constructUri(
+								UriFactory.Likes.GET_LIKERS, map, true);
+				JSONObject object = (
+									new GetMethod()
+									.setMethodURI(uri)
 									).call().getJSON();
 				ArrayList<User> likers =  new ArrayList<User>();
 				JSONArray likerUserObjects = object.getJSONArray("data");
@@ -627,16 +620,11 @@ public class Media extends InstagramModel {
 	     * @param captionObject json object used to create this caption
 	     * @throws InstagramException
 	     */
-		public Caption(JSONObject captionObject) throws InstagramException {
-			try{
-				this.setId(captionObject.getString("id"));
-				this.setFrom(new User(captionObject.getJSONObject("from"), accessToken));
-				this.setText(captionObject.getString("text"));
-				this.setCreatedTimestamp(captionObject.getString("created_time"));
-				
-			} catch(JSONException e) {
-				throw new InstagramException("JSON parsing error");
-			}
+		public Caption(JSONObject captionObject) throws JSONException {
+			this.setId(captionObject.getString("id"));
+			this.setFrom(new User(captionObject.getJSONObject("from"), accessToken));
+			this.setText(captionObject.getString("text"));
+			this.setCreatedTimestamp(captionObject.getString("created_time"));
 		}
 		
 	    /**

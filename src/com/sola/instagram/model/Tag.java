@@ -10,16 +10,10 @@ public class Tag extends InstagramModel {
 	int mediaCount;
 	String name;
 
-	public Tag(JSONObject obj, String accessToken) throws InstagramException {
+	public Tag(JSONObject obj, String accessToken) throws JSONException {
 		super(obj, accessToken);
-		try {
-
-			setName(obj.getString("name"));
-			setMediaCount(obj.getInt("media_count"));
-
-		} catch (JSONException e) {
-			throw new InstagramException("JSON parsing error");
-		}
+		setName(obj.getString("name"));
+		setMediaCount(obj.getInt("media_count"));
 	}
 
 	protected void setMediaCount(int mediaCount) {

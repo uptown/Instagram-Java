@@ -12,16 +12,12 @@ public class Comment extends InstagramModel {
 	String id;
 
 	public Comment(JSONObject obj, String accessToken)
-			throws InstagramException {
+			throws JSONException {
 		super(obj, accessToken);
-		try {
-			setCreatedTimestamp(obj.getString("created_time"));
-			setText(obj.getString("text"));
-			setId(obj.getString("id"));
-			setSender((new User(obj.getJSONObject("from"), accessToken)));
-		} catch (JSONException e) {
-			throw new InstagramException("JSON parsing error");
-		}
+		setCreatedTimestamp(obj.getString("created_time"));
+		setText(obj.getString("text"));
+		setId(obj.getString("id"));
+		setSender((new User(obj.getJSONObject("from"), accessToken)));
 	}
 
 	public String getCreatedTimestamp() {

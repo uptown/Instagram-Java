@@ -16,34 +16,19 @@ public abstract class APIMethod {
 	String type;
 	String accessToken;
 
-	abstract protected InputStream performRequest();
+	abstract protected InputStream performRequest() throws Exception;
 
 	public APIMethod() {}
 
-	public RequestResponse call() throws InstagramException {
+	public RequestResponse call() throws Exception {
 		String line = "", chunk;
 		BufferedReader rd = new BufferedReader(new InputStreamReader(performRequest()));
-		try {
-			while ((chunk = rd.readLine()) != null) 
-				line += chunk;
-				//System.out.println(line);
-		} catch (Exception e) {
-			e.printStackTrace();
+		while ((chunk = rd.readLine()) != null) {
+			line += chunk;
 		}
 		return new RequestResponse(line);
 	}
 	
-	/*
-	System.out.println(line);
-	obj = new JSONObject(new JSONTokener(line));
-	if ((obj.has("meta") && obj.getJSONObject("meta").getInt("code") != 200)
-			|| (obj.has("code") && obj.getInt("code") != 200)) {
-		throw new InstagramException("\nUri => " + getMethodUri()
-				+ "\nResponse => " + obj.toString());
-	}
-throw new InstagramException("JSON Parsing Error\nUri => "
-					+ getMethodUri() + "\nResponse => " + obj.toString());
-	*/
 	public String getType() {
 		return type;
 	}
