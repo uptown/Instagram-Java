@@ -12,10 +12,10 @@ This library has a dependence on Apache HttpClient 4.2.1. It can be downloaded [
 ```java
 InstagramAuthentication auth =  new InstagramAuthentication();
 String authUrl = auth.setRedirectUri("your_redirect_url")
-  			 	 .setClientSecret("your_app_secrect")
-  			 	 .setClientId("your_client_id")
-        .setScope("comments+likes")
-  			 	 .getAuthorizationUri();
+                     .setClientSecret("your_app_secrect")
+                     .setClientId("your_client_id")
+                     .setScope("comments+likes")
+                     .getAuthorizationUri();
 ```
  After the user has authorized the app, get the access token by passing the code given in the callback URL. 
 ```java
