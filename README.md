@@ -36,14 +36,14 @@ Here are some common endpoint calls. Please refer to the javadoc at `/doc/com/so
 ```
 
 ### See the authenticated user's feed
-Results are paginated, so the required page must also be indicated. The page number is a 1-based index.
+Results are paginated, so the required page must also be indicated. The page number is a 0-based index.
 ```java
   //Endpoint: GET /users/self/feed
   List<Media> user = session.getFeed(1); //first page
 ```
 
 ### Get the most recent media published by a user
-Results are paginated, so the required page must also be indicated. The page number is a 1-based index.
+Results are paginated, so the required page must also be indicated. The page number is a 0-based index.
 ```java
   //Endpoint: GET /users/3/media/recent
   int userId = 3;
@@ -58,10 +58,10 @@ Results are paginated, so the required page must also be indicated. The page num
 ```
 
 ### Get a user's the followers and follows
-Results are paginated, so the required page must also be indicated. The page number is a 1-based index.
+Results are paginated, so the required page must also be indicated. The page number is a 0-based index.
 ```java 
   int userId = 3;
-  int pageNumber = 1; //first page
+  int pageNumber = 0; //first page
   // GET /users/3/follows
   List<User> follows = session.getFollows(userId, pageNumber); 
   // GET /users/3/followed-by
