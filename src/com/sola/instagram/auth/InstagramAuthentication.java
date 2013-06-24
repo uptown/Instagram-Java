@@ -8,6 +8,7 @@ import com.sola.instagram.io.UriFactory;
 import com.sola.instagram.model.User;
 import com.sola.instagram.util.UriConstructor;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.json.JSONException;
@@ -19,7 +20,17 @@ public class InstagramAuthentication {
 	String clientSecret;
 	AccessToken accessToken;
 	User sessionUser;
+	String scope = "basic";
 	
+	public String getScope() {
+		return scope;
+	}
+
+	public InstagramAuthentication setScope(String scope) {
+		this.scope = scope;
+		return this;
+	}
+
 	protected String getRedirectUri() {
 		return redirectUri;
 	}
@@ -63,6 +74,9 @@ public class InstagramAuthentication {
 		postArgs.put("client_secret", getClientSecret());
 		postArgs.put("grant_type", "authorization_code");
 		postArgs.put("redirect_uri", getRedirectUri());
+		if(getScope() != null && getScope() != "" ) {
+			postArgs.put("scope", getScope());
+		}
 		postArgs.put("code", code);
 
 		

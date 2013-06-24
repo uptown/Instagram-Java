@@ -32,16 +32,6 @@ public class InstagramSessionTest {
 	@Test
 	public void testGetRecentPublishedMedia() throws Exception {
 		InstagramSession session = this.getNewSession();
-
-		/*
-		 * Test for an invalid page number it should throw an InstagramException
-		 */
-		try {
-			session.getRecentPublishedMedia(Constants.VALID_USER_ID, 0);
-			fail("No Exception thrown for out of bounds page");
-		} catch (InstagramException e) {
-		}
-
 		/*
 		 * Test that no Exception is thrown for a valid user id and page number
 		 */
@@ -51,39 +41,20 @@ public class InstagramSessionTest {
 	@Test
 	public void testGetFeed() throws Exception, JSONException {
 		InstagramSession session = this.getNewSession();
-
-		/*
-		 * Test for an invalid page number it should throw an InstagramException
-		 */
-		try {
-			session.getFeed(0);
-			fail("No Exception thrown for out of bounds page");
-		} catch (InstagramException e) {
-		}
-
 		/*
 		 * Test that no Exception is thrown for a valid page number
 		 */
-		session.getFeed(1);
+		session.getFeed(0);			
 	}
 
 	@Test
 	public void testGetLikedMedia() throws Exception {
 		InstagramSession session = this.getNewSession();
-
-		/*
-		 * Test for an invalid page number it should throw an InstagramException
-		 */
-		try {
-			session.getLikedMedia(0);
-			fail("No Exception thrown for out of bounds page");
-		} catch (InstagramException e) {
-		}
-
+		
 		/*
 		 * Test that no Exception is thrown for a valid page number
 		 */
-		session.getLikedMedia(1);
+		session.getLikedMedia(10);
 	}
 
 	@Test
@@ -140,15 +111,6 @@ public class InstagramSessionTest {
 	@Test
 	public void testGetFollowers() throws Exception {
 		InstagramSession session = this.getNewSession();
-
-		/*
-		 * Test for an invalid page number it should throw an InstagramException
-		 */
-		try {
-			session.getFollowers(Constants.VALID_USER_ID, 0);
-			fail("No Exception thrown for out of bounds page");
-		} catch (InstagramException e) {
-		}
 
 		/*
 		 * Test that no Exception is thrown for a valid page number and user id

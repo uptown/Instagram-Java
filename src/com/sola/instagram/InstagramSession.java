@@ -42,6 +42,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONArray;
 
+import java.lang.reflect.*;
 /**
  * Constains a methods used to interact with the API.
  * 
@@ -53,7 +54,7 @@ public class InstagramSession {
 	String accessToken;
 	User currentUser;
 	UriConstructor uriConstructor;
-
+	HashMap<String, ArrayList<String>> pageMap;
 	public InstagramSession() {
 	}
 
@@ -67,6 +68,8 @@ public class InstagramSession {
 		setAccessToken(accessToken.getTokenString());
 		// this.currentUser = sessionUser;
 		this.uriConstructor = new UriConstructor(getAccessToken());
+		this.pageMap = new HashMap<String, ArrayList<String>>();	
+		this.initPageUriCache();
 	}
 
 	protected String getAccessToken() {
@@ -77,6 +80,50 @@ public class InstagramSession {
 		this.accessToken = accessToken;
 	}
 
+	protected String getURiForPage(String method, String initialApiUri, int pageNumber) 
+			throws Exception {
+		ArrayList<String> pageUris = this.pageMap.get(method);
+		if(pageUris.size() == 0) {
+			pageUris.add(initialApiUri);
+		}
+		if(pageNumber < pageUris.size()) {
+			return pageUris.get(pageNumber);
+		}
+		String currentPageUri = pageUris.get(pageUris.size() - 1);
+		JSONObject object = new JSONObject();
+		for (int i = pageUris.size() - 1; i < pageNumber; i++) {
+			object = (new GetMethod()
+						.setMethodURI(currentPageUri)
+					).call().getJSON();
+			
+			if (!object.isNull("pagination") && 
+					!object.getJSONObject("pagination").isNull("next_url")) {
+				currentPageUri = object.getJSONObject("pagination")
+									.getString("next_url");
+				pageUris.add(currentPageUri);
+			}
+			else break;
+		}			
+		return currentPageUri;
+	}
+	
+	protected void initPageUriCache() {
+		//create page URI cache for api methods
+        try {
+            Method methods[] = this.getClass().getMethods();
+            for (int i = 0; i < methods.length; i++) {
+            	this.pageMap.put(methods[i].getName(), new ArrayList<String>());
+            }
+        }
+        catch (Throwable e) {
+            System.err.println(e);
+        }			
+	}
+	
+	public void flushCache() {
+		this.initPageUriCache();
+	}
+	
 	/**
 	 * Finds and returns a user with the given id. Throws an InstagramException
 	 * if none is found or the user with that id cannot be accessed
@@ -116,14 +163,13 @@ public class InstagramSession {
 	 * @param userId
 	 *            id of the user
 	 * @param pageNumber
-	 *            the required result page. Must be > 0.
+	 *            the required result page. Must be >= 0.
 	 * @throws Exception,  JSONException
 	 * @return List of recent media published by the user, within the page
 	 *         number passed
 	 */
 	public List<Media> getRecentPublishedMedia(int userId, int pageNumber)
 			throws Exception {
-
 		if (pageNumber <= 0) {
 			throw new InstagramException(
 					"The page number must be greater than 0");
@@ -159,76 +205,57 @@ public class InstagramSession {
 	 * the required page must also be indicated.
 	 * 
 	 * @param pageNumber
-	 *            the required result page. Must be > 0.
+	 *            the required result page. Must be >= 0.
 	 * @throws Exception,  JSONException
 	 * @return List of recent media in the current user's feed
 	 */
-	public List<Media> getFeed(int pageNumber) throws Exception,  JSONException, 
-		JSONException {
-		if (pageNumber <= 0) {
-			throw new InstagramException(
-					"The page number must be greater than 0");
-		} else {
-			JSONObject object = null;
-			ArrayList<Media> media = new ArrayList<Media>();
-			String uriString = uriConstructor.constructUri(
-					UriFactory.Users.GET_FEED, null, true);
-			for (int i = 0; i < pageNumber; i++) {
-				object = (new GetMethod().setMethodURI(uriString)).call()
-						.getJSON();
-				if (object.getJSONObject("pagination").has("next_url"))
-					uriString = object.getJSONObject("pagination")
-							.getString("next_url");
-				else
-					break;
-			}
-
-			JSONArray mediaItems = object.getJSONArray("data");
-			for (int i = 0; i < mediaItems.length(); i++) {
-				media.add(new Media(mediaItems.getJSONObject(i),
-						accessToken));
-			}
-			return media;
+	public List<Media> getFeed(int pageNumber) throws Exception {
+		assert pageNumber >= 0 : "The page number must be greater than or equal to 0";
+		JSONObject object = null;
+		String initialUriString = uriConstructor.constructUri (
+										UriFactory.Users.GET_FEED, null, true
+								  );
+		String uriString = this.getURiForPage (
+										"getFeed", 
+										initialUriString, 
+										pageNumber
+							);
+		object = (new GetMethod()
+					.setMethodURI(uriString)
+				).call().getJSON();
+		ArrayList<Media> media = new ArrayList<Media>();
+		JSONArray mediaItems = object.getJSONArray("data");
+		for (int i = 0; i < mediaItems.length(); i++) {
+			media.add(new Media(mediaItems.getJSONObject(i),
+					accessToken));
 		}
-
+		return media;
 	}
-
+	
 	/**
 	 * Gets the recent media that the current user has liked. Results are
 	 * paginated, the required page must also be indicated.
 	 * 
 	 * @param pageNumber
-	 *            the required result page. Must be > 0.
+	 *            the required result page. Must be >= 0.
 	 * @throws Exception,  JSONException
 	 * @return List of recent media that the current user has liked
 	 */
-	public List<Media> getLikedMedia(int pageNumber) throws Exception,  JSONException,
-							JSONException{
-		if (pageNumber <= 0) {
-			throw new InstagramException(
-					"The page number must be greater than 0");
-		} else {
-			JSONObject object = null;
-			List<Media> media = new ArrayList<Media>();
-			String uriString = uriConstructor.constructUri(
-					UriFactory.Users.GET_LIKED_MEDIA, null, true);
-			for (int i = 0; i < pageNumber; i++) {
-				object = (new GetMethod().setMethodURI(uriString)).call()
-						.getJSON();
-				if (object.getJSONObject("pagination").has("next_url"))
-					uriString = object.getJSONObject("pagination")
-							.getString("next_url");
-				else
-					break;
-			}
-
-			JSONArray mediaItems = object.getJSONArray("data");
-			for (int i = 0; i < mediaItems.length(); i++) {
-				media.add(new Media(mediaItems.getJSONObject(i),
-						getAccessToken()));
-			}
-			return media;
+	public List<Media> getLikedMedia(int pageNumber) throws Exception {
+		assert pageNumber >= 0 : "The page number must be greater than or equal to 0";
+		String initialUriString = uriConstructor.constructUri(
+									UriFactory.Users.GET_LIKED_MEDIA, null, true);
+		String uriString = this.getURiForPage("getLikedMedia", initialUriString, pageNumber);		
+		JSONObject object = (new GetMethod()
+								.setMethodURI(uriString)
+							).call().getJSON();
+		JSONArray mediaItems = object.getJSONArray("data");
+		List<Media> media = new ArrayList<Media>();
+		for (int i = 0; i < mediaItems.length(); i++) {
+			media.add(new Media(mediaItems.getJSONObject(i),
+					getAccessToken()));
 		}
+		return media;		
 	}
 
 	/**
@@ -292,9 +319,8 @@ public class InstagramSession {
 	 * @throws Exception,  JSONException
 	 * @return List of the most popular media on instagram.
 	 */
-	public List<Media> getPopularMedia() throws Exception,  JSONException,
-							JSONException {
-		JSONObject object = null;
+	public List<Media> getPopularMedia() throws Exception {
+		JSONObject object = null; 
 		ArrayList<Media> media = new ArrayList<Media>();
 		String uriString = uriConstructor.constructUri(
 				UriFactory.Media.GET_POPULAR_MEDIA, null, true);
@@ -317,8 +343,7 @@ public class InstagramSession {
 	 * @throws Exception,  JSONException
 	 * @return List of users who match the search criteria
 	 */
-	public List<User> searchUsersByName(String name) throws Exception,  JSONException,
-			JSONException{
+	public List<User> searchUsersByName(String name) throws Exception {
 		ArrayList<User> users = new ArrayList<User>();
 		String uriString = uriConstructor.constructUri(
 				UriFactory.Users.SEARCH_USER_BY_NAME, null, true)
@@ -340,14 +365,14 @@ public class InstagramSession {
 	 * @param userId
 	 *            id of the user whose follow list is to be returned
 	 * @param pageNumber
-	 *            the required result page. Must be > 0.
+	 *            the required result page. Must be >= 0.
 	 * @throws Exception,  JSONException
 	 * @return List of users by page, that the user, whose id is passed,
 	 *         follows.
 	 */
 	public List<User> getFollows(int userId, int pageNumber)
 			throws Exception {
-		if (pageNumber <= 0) {
+		if (pageNumber < 0) {
 			throw new InstagramException(
 					"The page number must be greater than 0");
 		}
@@ -358,7 +383,7 @@ public class InstagramSession {
 		String uriString = uriConstructor.constructUri(
 				UriFactory.Relationships.GET_FOLLOWS, map, true);
 
-		for (int i = 0; i < pageNumber; i++) {
+		for (int i = 0; i < pageNumber + 1; i++) {
 			object = (new GetMethod().setMethodURI(uriString)).call()
 					.getJSON();
 			if (object.getJSONObject("pagination").has("next_url"))

@@ -18,6 +18,7 @@ public class GetMethod extends APIMethod {
 	
 	@Override
 	protected InputStream performRequest() {
+		System.out.println(this.methodUri);
 		HttpResponse response;
 		InputStream stream = null;
 		HttpGet post = new HttpGet(this.methodUri);
