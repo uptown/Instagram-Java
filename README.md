@@ -14,6 +14,7 @@ InstagramAuthentication auth =  new InstagramAuthentication();
 String authUrl = auth.setRedirectUri("your_redirect_url")
   			 	 .setClientSecret("your_app_secrect")
   			 	 .setClientId("your_client_id")
+        .setScope("comments+likes")
   			 	 .getAuthorizationUri();
 ```
  After the user has authorized the app, get the access token by passing the code given in the callback URL. 
@@ -46,7 +47,7 @@ Results are paginated, so the required page must also be indicated. The page num
 ```java
   //Endpoint: GET /users/3/media/recent
   int userId = 3;
-  int pageNumber = 1; //first page
+  int pageNumber = 0; //first page
   List<Media> recentMedia = session.getRecentPublishedMedia(userId, pageNumber);
 ```
 
