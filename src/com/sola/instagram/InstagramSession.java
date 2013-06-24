@@ -170,7 +170,7 @@ public class InstagramSession {
 	 */
 	public List<Media> getRecentPublishedMedia(int userId, int pageNumber)
 			throws Exception {
-		if (pageNumber <= 0) {
+		if (pageNumber < 0) {
 			throw new InstagramException(
 					"The page number must be greater than 0");
 		} else {
@@ -181,7 +181,7 @@ public class InstagramSession {
 			String uriString = uriConstructor.constructUri(
 					UriFactory.Users.GET_RECENT_MEDIA, map, true);
 
-			for (int i = 0; i < pageNumber; i++) {
+			for (int i = 0; i < pageNumber + 1; i++) {
 				object = (new GetMethod().setMethodURI(uriString)).call()
 						.getJSON();
 				if (object.getJSONObject("pagination").has("next_url"))
@@ -404,7 +404,7 @@ public class InstagramSession {
 
 	public List<User> getFollowers(int userId, int pageNumber)
 			throws Exception {
-		if (pageNumber <= 0) {
+		if (pageNumber < 0) {
 			throw new InstagramException(
 					"The page number must be greater than 0");
 		}
@@ -414,7 +414,7 @@ public class InstagramSession {
 		ArrayList<User> users = new ArrayList<User>();
 		String uriString = uriConstructor.constructUri(
 				UriFactory.Relationships.GET_FOLLOWERS, map, true);
-		for (int i = 0; i < pageNumber; i++) {
+		for (int i = 0; i < pageNumber + 1; i++) {
 			object = (new GetMethod().setMethodURI(uriString)).call()
 					.getJSON();
 			if (object.getJSONObject("pagination").has("next_url"))
@@ -569,7 +569,7 @@ public class InstagramSession {
 
 	public List<Media> getRecentMediaForTag(String tagName, int pageNumber)
 			throws Exception {
-		if (pageNumber <= 0) {
+		if (pageNumber < 0) {
 			throw new InstagramException(
 					"The page number must be greater than 0");
 		}
@@ -579,7 +579,7 @@ public class InstagramSession {
 		String uriString = uriConstructor.constructUri(
 				UriFactory.Tags.GET_RECENT_TAGED_MEDIA, map, true);
 		
-		for (int i = 0; i < pageNumber; i++) {
+		for (int i = 0; i < pageNumber + 1; i++) {
 			object = (new GetMethod().setMethodURI(uriString)).call()
 					.getJSON();
 			if (object.getJSONObject("pagination").has("next_url"))
@@ -625,7 +625,7 @@ public class InstagramSession {
 
 	public List<Media> getRecentMediaFromLocation(int locationId, int pageNumber)
 			throws Exception {
-		if (pageNumber <= 0) {
+		if (pageNumber < 0) {
 			throw new InstagramException(
 					"The page number must be greater than 0");
 		}
@@ -635,7 +635,7 @@ public class InstagramSession {
 		String uriString = uriConstructor.constructUri(
 				UriFactory.Locations.GET_MEDIA_FROM_LOCATION, map, true);
 
-		for (int i = 0; i < pageNumber; i++) {
+		for (int i = 0; i < pageNumber + 1; i++) {
 			object = (new GetMethod().setMethodURI(uriString)).call()
 					.getJSON();
 			if (object.getJSONObject("pagination").has("next_url"))
