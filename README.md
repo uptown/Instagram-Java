@@ -39,7 +39,7 @@ Here are some common endpoint calls. Please refer to the javadoc at `/doc/com/so
 Results are paginated, so the required page must also be indicated. The page number is a 0-based index.
 ```java
   //Endpoint: GET /users/self/feed
-  List<Media> user = session.getFeed(1); //first page
+  List<Media> user = session.getFeed(0); //first page
 ```
 
 ### Get the most recent media published by a user
