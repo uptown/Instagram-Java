@@ -132,7 +132,7 @@ public class InstagramSession {
 			@Override
 			public void handleLoad(JSONArray mediaItems) throws JSONException {
 				for (int i = 0; i < mediaItems.length(); i++) {
-					list.add(new Media(mediaItems.getJSONObject(i),
+					list.add(Media.fromJSON(mediaItems.getJSONObject(i),
 							getAccessToken()));
 				}					
 			}
@@ -156,7 +156,7 @@ public class InstagramSession {
 			@Override
 			public void handleLoad(JSONArray mediaItems) throws JSONException {
 				for (int i = 0; i < mediaItems.length(); i++) {
-					list.add(new Media(mediaItems.getJSONObject(i),
+					list.add(Media.fromJSON(mediaItems.getJSONObject(i),
 							getAccessToken()));
 				}					
 			}
@@ -178,7 +178,7 @@ public class InstagramSession {
 			@Override
 			public void handleLoad(JSONArray mediaItems) throws JSONException {
 				for (int i = 0; i < mediaItems.length(); i++) {
-					list.add(new Media(mediaItems.getJSONObject(i),
+					list.add(Media.fromJSON(mediaItems.getJSONObject(i),
 							getAccessToken()));
 				}					
 			}
@@ -201,7 +201,7 @@ public class InstagramSession {
 		JSONObject object = (new GetMethod().setMethodURI(uriConstructor
 				.constructUri(UriFactory.Media.GET_MEDIA, map, true)))
 				.call().getJSON();
-		return (new Media(object.getJSONObject("data"), getAccessToken()));
+		return Media.fromJSON(object.getJSONObject("data"), getAccessToken());
 	}
 
 	/**
@@ -235,7 +235,7 @@ public class InstagramSession {
 							).call().getJSON();
 		JSONArray mediaItems = object.getJSONArray("data");
 		for (int i = 0; i < mediaItems.length(); i++) {
-			media.add(new Media(mediaItems.getJSONObject(i),
+			media.add(Media.fromJSON(mediaItems.getJSONObject(i),
 					getAccessToken()));
 		}
 		return media;
@@ -257,7 +257,7 @@ public class InstagramSession {
 
 		JSONArray mediaItems = object.getJSONArray("data");
 		for (int i = 0; i < mediaItems.length(); i++) {
-			media.add(new Media(mediaItems.getJSONObject(i),
+			media.add(Media.fromJSON(mediaItems.getJSONObject(i),
 					getAccessToken()));
 		}
 		return media;
@@ -478,7 +478,7 @@ public class InstagramSession {
 			@Override
 			public void handleLoad(JSONArray mediaItems) throws JSONException {
 				for (int i = 0; i < mediaItems.length(); i++) {
-					list.add(new Media(mediaItems.getJSONObject(i),
+					list.add(Media.fromJSON(mediaItems.getJSONObject(i),
 							getAccessToken()));
 				}					
 			}
@@ -520,7 +520,7 @@ public class InstagramSession {
 			@Override
 			public void handleLoad(JSONArray mediaItems) throws JSONException {
 				for (int i = 0; i < mediaItems.length(); i++) {
-					list.add(new Media(mediaItems.getJSONObject(i),
+					list.add(Media.fromJSON(mediaItems.getJSONObject(i),
 							getAccessToken()));
 				}					
 			}

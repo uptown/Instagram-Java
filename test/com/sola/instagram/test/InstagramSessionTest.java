@@ -12,6 +12,7 @@ import com.sola.instagram.model.Comment;
 import com.sola.instagram.model.Media;
 import com.sola.instagram.model.Relationship;
 import com.sola.instagram.model.User;
+import com.sola.instagram.model.VideoMedia;
 import com.sola.instagram.util.PaginatedCollection;
 
 import org.json.JSONException;
@@ -71,7 +72,8 @@ public class InstagramSessionTest {
 		/*
 		 * Test that no Exception is thrown for a valid media id
 		 */
-		getNewSession().getMedia(Constants.VALID_MEDIA_ID);
+		VideoMedia media = (VideoMedia)getNewSession().getMedia(Constants.VALID_MEDIA_ID);
+		return;
 	}
 
 	@Test

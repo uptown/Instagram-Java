@@ -262,6 +262,15 @@ public class Media extends InstagramModel {
 		uriConstructor = new UriConstructor(getAccessToken());
 	}
 	
+	
+	public static Media fromJSON(JSONObject obj, String accessToken) throws JSONException {
+		if(obj.getString("type").equals("video")) {
+			return new VideoMedia(obj, accessToken);
+		} else {
+			return new ImageMedia(obj, accessToken);
+		}
+	}
+	
     /**
      * Returns the type of this media
      * @return The type of this media 
