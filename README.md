@@ -35,20 +35,17 @@ Here are some common endpoint calls. Please refer to the javadoc at `/doc/com/so
   User user = session.getUserById(3);
 ```
 
-### See the authenticated user's feed
-Results are paginated, so the required page must also be indicated. The page number is a 0-based index.
+### See the authenticated user's feed, results are paginated 
 ```java
   //Endpoint: GET /users/self/feed
-  List<Media> user = session.getFeed(0); //first page
+  PaginatedCollection<Media> user = session.getFeed(); 
 ```
 
-### Get the most recent media published by a user
-Results are paginated, so the required page must also be indicated. The page number is a 0-based index.
+### Get a list of the most recent media published by a user
 ```java
   //Endpoint: GET /users/3/media/recent
   int userId = 3;
-  int pageNumber = 0; //first page
-  List<Media> recentMedia = session.getRecentPublishedMedia(userId, pageNumber);
+  PaginatedCollection<Media> recentMedia = session.getRecentPublishedMedia(userId);
 ```
 
 ### Search for a user by name
@@ -57,15 +54,13 @@ Results are paginated, so the required page must also be indicated. The page num
   List<User> searchResults = session.searchUsersByName("jack");
 ```
 
-### Get a user's the followers and follows
-Results are paginated, so the required page must also be indicated. The page number is a 0-based index.
+### Get a list of the user's followers and follows
 ```java 
   int userId = 3;
-  int pageNumber = 0; //first page
   // GET /users/3/follows
-  List<User> follows = session.getFollows(userId, pageNumber); 
+  PaginatedCollection<User> follows = session.getFollows(userId); 
   // GET /users/3/followed-by
-  List<User> followers = session.getFollowers(userId, pageNumber); 
+  PaginatedCollection<User> followers = session.getFollowers(userId); 
 ```
 
 ### Follow a user
