@@ -113,7 +113,7 @@ public class InstagramSession {
 
 	/**
 	 * Finds and returns the most recent media published by the user with the id
-	 * passed. Results are paginated, the required page must also be indicated
+	 * passed. 
 	 * 
 	 * @param userId
 	 *            id of the user
@@ -142,8 +142,7 @@ public class InstagramSession {
 	}
 
 	/**
-	 * Gets the recent media in the current user's feed. Results are paginated,
-	 * the required page must also be indicated.
+	 * Gets the recent media in the current user's feed
 	 * 
 	 * @throws Exception,  JSONException
 	 * @return List of recent media in the current user's feed
@@ -166,8 +165,7 @@ public class InstagramSession {
 	}
 	
 	/**
-	 * Gets the recent media that the current user has liked. Results are
-	 * paginated, the required page must also be indicated.
+	 * Gets the recent media that the current user has liked. 
 	 * 
 	 * @throws Exception,  JSONException
 	 * @return List of recent media that the current user has liked
@@ -289,8 +287,7 @@ public class InstagramSession {
 	}
 
 	/**
-	 * Gets a list of users that the user, whose id is passed, follows. Results
-	 * are paginated, the required page must also be indicated
+	 * Gets a list of users that the user, whose id is passed, follows. 
 	 * 
 	 * @param userId
 	 *            id of the user whose follow list is to be returned
