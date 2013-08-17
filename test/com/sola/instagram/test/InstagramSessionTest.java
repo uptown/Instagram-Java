@@ -11,6 +11,8 @@ import com.sola.instagram.exception.InstagramException;
 import com.sola.instagram.model.Comment;
 import com.sola.instagram.model.Media;
 import com.sola.instagram.model.Relationship;
+import com.sola.instagram.model.User;
+import com.sola.instagram.util.PaginatedCollection;
 
 import org.json.JSONException;
 import org.junit.Test;
@@ -32,10 +34,14 @@ public class InstagramSessionTest {
 	@Test
 	public void testGetRecentPublishedMedia() throws Exception {
 		InstagramSession session = this.getNewSession();
-		/*
-		 * Test that no Exception is thrown for a valid user id and page number
-		 */
-		session.getRecentPublishedMedia(Constants.VALID_USER_ID, 1);
+		PaginatedCollection<Media> media = session.getRecentPublishedMedia(Constants.VALID_USER_ID);
+		int i = 0;
+		for(Media _media: media) {
+			System.out.println(_media);
+			if(i++ == 50) {
+				break;
+			}
+		}		
 	}
 
 	@Test
@@ -44,17 +50,20 @@ public class InstagramSessionTest {
 		/*
 		 * Test that no Exception is thrown for a valid page number
 		 */
-		session.getFeed(0);			
+		PaginatedCollection<Media> media = session.getFeed();	
+		int i = 0;
+		for(Media _media: media) {
+			System.out.println(_media);
+			if(i++ == 50) {
+				break;
+			}
+		}			
 	}
 
 	@Test
 	public void testGetLikedMedia() throws Exception {
 		InstagramSession session = this.getNewSession();
-		
-		/*
-		 * Test that no Exception is thrown for a valid page number
-		 */
-		session.getLikedMedia(10);
+		session.getLikedMedia();
 	}
 
 	@Test
@@ -86,36 +95,26 @@ public class InstagramSessionTest {
 		/*
 		 * Test that no Exception is thrown
 		 */
-		getNewSession().searchUsersByName("instagram");
+		System.out.print(getNewSession().searchUsersByName(Constants.VALID_USERNAME));
 	}
 
 	@Test
 	public void testGetFollows() throws Exception {
 		InstagramSession session = this.getNewSession();
 
-		/*
-		 * Test for an invalid page number it should throw an InstagramException
-		 */
-		try {
-			session.getFollows(Constants.VALID_USER_ID, 0);
-			fail("No Exception thrown for out of bounds page");
-		} catch (InstagramException e) {
+		PaginatedCollection<User> follows = session.getFollows(Constants.VALID_USER_ID);
+		for(User user: follows) {
+			System.out.println(user);
 		}
-
-		/*
-		 * Test that no Exception is thrown for a valid page number and user id
-		 */
-		session.getFollows(Constants.VALID_USER_ID, 1);
 	}
 
 	@Test
 	public void testGetFollowers() throws Exception {
 		InstagramSession session = this.getNewSession();
-
-		/*
-		 * Test that no Exception is thrown for a valid page number and user id
-		 */
-		session.getFollowers(Constants.VALID_USER_ID, 1);
+		PaginatedCollection<User> followers = session.getFollowers(Constants.VALID_USER_ID);
+		for(User user: followers) {
+			System.out.println(user);
+		}		
 	}
 
 	@Test
@@ -194,19 +193,14 @@ public class InstagramSessionTest {
 	@Test
 	public void testGetRecentMediaForTag() throws Exception {
 		InstagramSession session = getNewSession();
-		/*
-		 * Test for an invalid page number it should throw an InstagramException
-		 */
-		try {
-			session.getRecentMediaForTag("yolo", 0);
-			fail("No Exception thrown for out of bounds page");
-		} catch (InstagramException e) {
+		PaginatedCollection<Media> media = session.getRecentMediaForTag("yolo");
+		int i = 0;
+		for(Media _media: media) {
+			System.out.println(_media);
+			if(i++ == 50) {
+				break;
+			}
 		}
-
-		/*
-		 * Test that no Exception is thrown for a valid page number and tag
-		 */
-		session.getRecentMediaForTag("yolo", 1);
 	}
 
 	@Test
@@ -228,19 +222,14 @@ public class InstagramSessionTest {
 	@Test
 	public void testGetRecentMediaFromLocation() throws Exception {
 		InstagramSession session = getNewSession();
-		/*
-		 * Test for an invalid page number it should throw an InstagramException
-		 */
-		try {
-			session.getRecentMediaFromLocation(Constants.VALID_LOCATION_ID, 0);
-			fail("No Exception thrown for out of bounds page");
-		} catch (InstagramException e) {
+		PaginatedCollection<Media> media = session.getRecentMediaFromLocation(Constants.VALID_LOCATION_ID);
+		int i = 0;
+		for(Media _media: media) {
+			System.out.println(_media);
+			if(i++ == 50) {
+				break;
+			}
 		}
-
-		/*
-		 * Test that no Exception is thrown for a valid page number and tag
-		 */
-		session.getRecentMediaFromLocation(Constants.VALID_LOCATION_ID, 1);
 	}
 
 }
