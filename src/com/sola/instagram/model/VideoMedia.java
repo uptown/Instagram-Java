@@ -58,17 +58,17 @@ public class VideoMedia extends Media {
 	 */
 	public class Video {
 		/**
-		 * Link to this image
+		 * Link to this video
 		 */
 		String uri;
 		
 		/**
-		 * Width of this image
+		 * Width of this video
 		 */
 		int width;
 		
 		/**
-		 * Height of this image
+		 * Height of this video
 		 */
 		int heigth;
 	
@@ -84,55 +84,55 @@ public class VideoMedia extends Media {
 		}
 		
 	    /**
-	     * Returns the url link to this image
-	     * @return The url link to this image 
+	     * Returns the url link to this video
+	     * @return The url link to this video 
 	     */
 		public String getUri() {
 			return uri;
 		}
 
 	    /**
-	     * Sets this image's url
-	     * @param url url for this image 
+	     * Sets this video's url
+	     * @param url url for this video 
 	     */
 		protected void setUri(String uri) {
 			this.uri = uri;
 		}
 	
 	    /**
-	     * Returns the width of this image
-	     * @return The width of this image 
+	     * Returns the width of this video
+	     * @return The width of this video 
 	     */
 		public int getWidth() {
 			return width;
 		}
 		
 	    /**
-	     * Sets this image's width
-	     * @param width width of this image 
+	     * Sets this video's width
+	     * @param width width of this video 
 	     */
 		protected void setWidth(int width) {
 			this.width = width;
 		}
 		
 	    /**
-	     * Returns the height of this image
-	     * @return The height of this image 
+	     * Returns the height of this video
+	     * @return The height of this video 
 	     */
 		public int getHeigth() {
 			return heigth;
 		}
 		
 	    /**
-	     * Sets this image's height
-	     * @param height height of this image 
+	     * Sets this video's height
+	     * @param height height of this video 
 	     */
 		protected void setHeigth(int heigth) {
 			this.heigth = heigth;
 		}
 
 	    /**
-	     * Checks if two image objects are equal
+	     * Checks if two video objects are equal
 	     * @param o The object to be compared 
 	     * @return True of the two objects are equal, false otherwise
 	     */
