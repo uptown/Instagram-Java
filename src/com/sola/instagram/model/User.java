@@ -76,7 +76,7 @@ public class User extends InstagramModel {
 	}
 	
 	public String getBio() throws Exception {
-		if(website == null) {
+		if(bio == null) {
 			refreshObject();
 		}
 		return bio;
@@ -128,28 +128,23 @@ public class User extends InstagramModel {
 	}
 	
 	private void refreshObject() throws Exception {
-		try {
-			UriConstructor uriConstructor = new UriConstructor(getAccessToken());
-			HashMap<String, Object> map = new HashMap<String, Object>();
-			map.put("user_id", getId());
-			String uri = uriConstructor.constructUri(
-								UriFactory.Users.GET_DATA, map, true);
-			JSONObject userObject = (new GetMethod()
-									.setMethodURI(uri)
-									).call().getJSON();
-			
-			if(userObject.has("data")) {
-				JSONObject counts = userObject.getJSONObject("data")
-									.getJSONObject("counts");
-				setFollowerCount(counts.getInt("followed_by"));
-				setFollowingCount(counts.getInt("follows"));
-				setMediaCount(counts.getInt("media"));		
-			}
-		} catch(JSONException e) {
-			throw new InstagramException("JSON parsing error");
-		} catch(InstagramException e) {
-			throw new InstagramException(getUserName() + "'s data cannot be accessed. "
-					+ "This user may have deleted their account");
+		UriConstructor uriConstructor = new UriConstructor(getAccessToken());
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("user_id", getId());
+		String uri = uriConstructor.constructUri(
+							UriFactory.Users.GET_DATA, map, true);
+		JSONObject userObject = (new GetMethod()
+								.setMethodURI(uri)
+								).call().getJSON();
+		
+		if(userObject.has("data")) {
+			JSONObject counts = userObject.getJSONObject("data")
+								.getJSONObject("counts");
+			setFollowerCount(counts.getInt("followed_by"));
+			setFollowingCount(counts.getInt("follows"));
+			setMediaCount(counts.getInt("media"));				
+			setWebsite(userObject.optString("website"));
+			setBio(userObject.optString("bio"));			
 		}
 	}
 	
