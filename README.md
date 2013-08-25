@@ -57,7 +57,7 @@ Here are some common endpoint calls. Please refer to the javadoc at `/doc/com/so
 ### Get a media object
 ```java
   //Endpoint: GET /media/5233810105500317233
-  Media media = session.getMedia('523381010550031723');
+  Media media = session.getMedia("523381010550031723");
   //check for video
   if (media instanceof VideoMedia) { 
     VideoMedia video = (VideoMedia)media;
