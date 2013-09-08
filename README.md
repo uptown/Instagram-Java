@@ -38,7 +38,10 @@ Here are some common endpoint calls. Please refer to the javadoc at `/doc/com/so
 ### See the authenticated user's feed, results are paginated 
 ```java
   //Endpoint: GET /users/self/feed
-  PaginatedCollection<Media> user = session.getFeed(); 
+  PaginatedCollection<Media> feed = session.getFeed(); 
+  for(Media media: feed) {
+    //do stuff
+  }
 ```
 
 ### Get a list of the most recent media published by a user
@@ -46,6 +49,19 @@ Here are some common endpoint calls. Please refer to the javadoc at `/doc/com/so
   //Endpoint: GET /users/3/media/recent
   int userId = 3;
   PaginatedCollection<Media> recentMedia = session.getRecentPublishedMedia(userId);
+  for(Media media: recentMedia) {
+    //do stuff
+  }  
+```
+
+### Get a media object
+```java
+  //Endpoint: GET /media/5233810105500317233
+  Media media = session.getMedia("523381010550031723");
+  //check for video
+  if (media instanceof VideoMedia) { 
+    VideoMedia video = (VideoMedia)media;
+  }  
 ```
 
 ### Search for a user by name
