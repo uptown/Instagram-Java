@@ -20,12 +20,11 @@ public class PaginationIterator<E> implements Iterator<E> {
 		if(list.size() == 0) fetch();
 	}
 
-	@Override
+
 	public boolean hasNext() {
 		return index < list.size() || !paginationComplete(); 
 	}
 
-	@Override
 	public E next() {
 		if(index >= list.size() - 1) {	
 			try {
@@ -38,7 +37,6 @@ public class PaginationIterator<E> implements Iterator<E> {
 		return list.get(index++);
 	}
 
-	@Override
 	public void remove() {
 		// not implenting this	
 	}
@@ -47,7 +45,6 @@ public class PaginationIterator<E> implements Iterator<E> {
 		if(paginationComplete()) return;
 		JSONObject object = (new GetMethod().setMethodURI(nextUri))
 				.call().getJSON();
-		System.out.println(object);
 		JSONObject pagination = object.optJSONObject("pagination");
 		nextUri = pagination == null ? null : pagination.optString("next_url");		
 		handleLoad(object.optJSONArray("data"));
