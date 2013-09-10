@@ -4,11 +4,11 @@ Java wrapper for Instagram's API v1
 
 ## Maven Setup
 ```java
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>4.2.1</version>
-        </dependency>
+<dependency>
+    <groupId>com.github.sola92</groupId>
+    <artifactId>instagram-java</artifactId>
+    <version>1.0-SNAPSHOT</version>
+</dependency>
 ```
 
 ## Authentication
