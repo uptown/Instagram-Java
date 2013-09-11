@@ -2,10 +2,14 @@ Instagram for Java
 ==============
 Java wrapper for Instagram's API v1
 
-## Setup
-Include the `/bin/java-instagram.jar` file in your project.
-
-This library has a dependence on Apache HttpClient 4.2.1. It can be downloaded [here](http://hc.apache.org/downloads.cgi).
+## Maven Setup
+```java
+<dependency>
+    <groupId>com.github.sola92</groupId>
+    <artifactId>instagram-java</artifactId>
+    <version>1.0-SNAPSHOT</version>
+</dependency>
+```
 
 ## Authentication
  Firstly, build the authorization URL
@@ -29,13 +33,13 @@ String authUrl = auth.setRedirectUri("your_redirect_url")
 ## Endpoint Examples
 Here are some common endpoint calls. Please refer to the javadoc at `/doc/com/sola/instagram/InstgramSession.html` for the full documentation of the endpoints.
 
-### Get basic information about a user 
+#### Get basic information about a user 
 ```java
   //Endpoint: GET /users/3
   User user = session.getUserById(3);
 ```
 
-### See the authenticated user's feed, results are paginated 
+#### See the authenticated user's feed, results are paginated 
 ```java
   //Endpoint: GET /users/self/feed
   PaginatedCollection<Media> feed = session.getFeed(); 
@@ -44,7 +48,7 @@ Here are some common endpoint calls. Please refer to the javadoc at `/doc/com/so
   }
 ```
 
-### Get a list of the most recent media published by a user
+#### Get a list of the most recent media published by a user
 ```java
   //Endpoint: GET /users/3/media/recent
   int userId = 3;
@@ -54,7 +58,7 @@ Here are some common endpoint calls. Please refer to the javadoc at `/doc/com/so
   }  
 ```
 
-### Get a media object
+#### Get a media object
 ```java
   //Endpoint: GET /media/5233810105500317233
   Media media = session.getMedia("523381010550031723");
@@ -64,13 +68,13 @@ Here are some common endpoint calls. Please refer to the javadoc at `/doc/com/so
   }  
 ```
 
-### Search for a user by name
+#### Search for a user by name
 ```java
   //Endpoint: GET /users/search?q=jack
   List<User> searchResults = session.searchUsersByName("jack");
 ```
 
-### Get a list of the user's followers and follows
+#### Get a list of the user's followers and follows
 ```java 
   int userId = 3;
   // GET /users/3/follows
@@ -79,14 +83,14 @@ Here are some common endpoint calls. Please refer to the javadoc at `/doc/com/so
   PaginatedCollection<User> followers = session.getFollowers(userId); 
 ```
 
-### Follow a user
+#### Follow a user
 ```java 
   int targetUserId = 3;
   // POST /users/3/relationship
   session.modifyRelationship(targetUserId, Relationship.Action.FOLLOW)
 ```
 
-### Unfollow a user
+#### Unfollow a user
 ```java 
   int targetUserId = 3;
   // POST /users/3/relationship
