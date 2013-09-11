@@ -8,7 +8,7 @@
     </parent>
     <groupId>com.github.sola92</groupId>
     <artifactId>instagram-java</artifactId>
-    <version>1.2</version>
+    <version>1.2.1</version>
     
     <name>Instagram for Java</name>
     <url>https://github.com/sola92/Instagram-Java</url>
