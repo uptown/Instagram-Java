@@ -2,7 +2,7 @@ Instagram for Java
 ==============
 Java wrapper for Instagram's API v1
 
-## Maven Setup
+### Maven 
 ```xml
 <dependency>
     <groupId>com.github.sola92</groupId>
@@ -11,7 +11,7 @@ Java wrapper for Instagram's API v1
 </dependency>
 ```
 
-## Authentication
+### Authentication
  Firstly, build the authorization URL
 ```java
 InstagramAuthentication auth =  new InstagramAuthentication();
@@ -30,7 +30,7 @@ String authUrl = auth.setRedirectUri("your_redirect_url")
   InstagramSession session = new InstagramSession(token);
   User rihanna = session.searchUsersByName("badgalriri").get(0);
 ``` 
-## Endpoint Examples
+### Endpoint Examples
 Here are some common endpoint calls. Please refer to the javadoc at `/doc/com/sola/instagram/InstgramSession.html` for the full documentation of the endpoints.
 
 #### Get basic information about a user 
