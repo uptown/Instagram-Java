@@ -28,7 +28,6 @@ import com.sola.instagram.exception.InstagramException;
 import com.sola.instagram.io.DeleteMethod;
 import com.sola.instagram.io.GetMethod;
 import com.sola.instagram.io.PostMethod;
-import com.sola.instagram.io.RequestResponse;
 import com.sola.instagram.io.UriFactory;
 import com.sola.instagram.model.*;
 import com.sola.instagram.util.PaginatedCollection;
@@ -38,13 +37,11 @@ import com.sola.instagram.util.UriConstructor;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONArray;
 
-import java.lang.reflect.*;
 /**
  * Constains a methods used to interact with the API.
  * 
@@ -57,9 +54,11 @@ public class InstagramSession {
 	User currentUser;
 	UriConstructor uriConstructor;
 	HashMap<String, ArrayList<String>> pageMap;
-	public InstagramSession() {
-	}
-
+	String proxyAddress;
+	int proxyPort;
+	
+	public InstagramSession() {}
+	
 	/**
 	 * Creates a new Instagram session
 	 * 
@@ -70,6 +69,50 @@ public class InstagramSession {
 		setAccessToken(accessToken.getTokenString());
 		this.uriConstructor = new UriConstructor(getAccessToken());
 	}
+	
+	/**
+	 * Sets an HTTP proxy for api requests
+	 * 
+	 * @param address
+	 *            ip address of the proxy
+	 * @param port
+	 *            port number of the proxy	            
+	 */	
+	public void setHttpProxy(String address, int port) {
+		proxyAddress = address;
+		proxyPort = port;
+	}
+
+	/**
+	 * Removes the HTTP proxy config            
+	 */	
+	public void removeHttpProxy() {
+		proxyAddress = null;
+	}	
+	
+	public GetMethod makeGetMethod() {
+		if(proxyAddress == null) {
+			return new GetMethod();
+		} else {
+			return new GetMethod(proxyAddress, proxyPort);
+		}
+	}	
+
+	public PostMethod makePostMethod() {
+		if(proxyAddress == null) {
+			return new PostMethod();
+		} else {
+			return new PostMethod(proxyAddress, proxyPort);
+		}
+	}		
+	
+	public DeleteMethod makeDeleteMethod() {
+		if(proxyAddress == null) {
+			return new DeleteMethod();
+		} else {
+			return new DeleteMethod(proxyAddress, proxyPort);
+		}
+	}	
 
 	protected String getAccessToken() {
 		return accessToken;
@@ -91,7 +134,7 @@ public class InstagramSession {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("user_id", userId);
 		try {
-			JSONObject userObject = (new GetMethod()
+			JSONObject userObject = (makeGetMethod()
 					.setMethodURI(uriConstructor.constructUri(
 							UriFactory.Users.GET_DATA, map, true))).call()
 					.getJSON();
@@ -198,7 +241,7 @@ public class InstagramSession {
 	public Media getMedia(String mediaId) throws Exception {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("media_id", mediaId);
-		JSONObject object = (new GetMethod().setMethodURI(uriConstructor
+		JSONObject object = (makeGetMethod().setMethodURI(uriConstructor
 				.constructUri(UriFactory.Media.GET_MEDIA, map, true)))
 				.call().getJSON();
 		return Media.fromJSON(object.getJSONObject("data"), getAccessToken());
@@ -230,7 +273,7 @@ public class InstagramSession {
 				+ getAccessToken() + "&lat=" + latitude + "&lng=" + longitude
 				+ "&min_timestamp=" + minTimestamp + "&max_timestamp="
 				+ maxTimestamp + "&distance=" + distance;
-		JSONObject object = (new GetMethod()
+		JSONObject object = (makeGetMethod()
 								.setMethodURI(uri)
 							).call().getJSON();
 		JSONArray mediaItems = object.getJSONArray("data");
@@ -253,7 +296,7 @@ public class InstagramSession {
 		String uriString = uriConstructor.constructUri(
 				UriFactory.Media.GET_POPULAR_MEDIA, null, true);
 
-		object = (new GetMethod().setMethodURI(uriString)).call().getJSON();
+		object = (makeGetMethod().setMethodURI(uriString)).call().getJSON();
 
 		JSONArray mediaItems = object.getJSONArray("data");
 		for (int i = 0; i < mediaItems.length(); i++) {
@@ -277,7 +320,7 @@ public class InstagramSession {
 				UriFactory.Users.SEARCH_USER_BY_NAME, null, true)
 				+ "&q="
 				+ name;
-		JSONArray userObjects = (new GetMethod().setMethodURI(uriString))
+		JSONArray userObjects = (makeGetMethod().setMethodURI(uriString))
 				.call().getJSON().getJSONArray("data");
 		for (int i = 0; i < userObjects.length(); i++) {
 			users.add(new User(userObjects.getJSONObject(i),
@@ -339,7 +382,7 @@ public class InstagramSession {
 		String uriString = uriConstructor.constructUri(
 				UriFactory.Relationships.GET_FOLLOW_REQUESTS, null, true);
 
-		object = (new GetMethod().setMethodURI(uriString)).call().getJSON();
+		object = (makeGetMethod().setMethodURI(uriString)).call().getJSON();
 
 		JSONArray userObjects;
 		userObjects = object.getJSONArray("data");
@@ -358,7 +401,7 @@ public class InstagramSession {
 		String uriString = uriConstructor.constructUri(
 				UriFactory.Relationships.GET_RELATIONSHIP_STATUS, map, true);
 
-		object = (new GetMethod().setMethodURI(uriString)).call().getJSON();
+		object = (makeGetMethod().setMethodURI(uriString)).call().getJSON();
 
 		return new Relationship(object.getJSONObject("data"),
 				getAccessToken());
@@ -396,7 +439,7 @@ public class InstagramSession {
 		args.put("action", actionString);
 		String uriString = uriConstructor.constructUri(
 				UriFactory.Relationships.MUTATE_RELATIONSHIP, map, true);
-		object = (new PostMethod().setPostParameters(args)
+		object = (makePostMethod().setPostParameters(args)
 				.setMethodURI(uriString)).call().getJSON();
 	
 		return object.getJSONObject("meta").getInt("code") == 200;
@@ -412,7 +455,7 @@ public class InstagramSession {
 		args.put("access_token", getAccessToken());
 		String uriString = uriConstructor.constructUri(
 				UriFactory.Comments.POST_MEDIA_COMMENT, map, false);
-		object = (new PostMethod().setPostParameters(args)
+		object = (makePostMethod().setPostParameters(args)
 				.setMethodURI(uriString)).call().getJSON();
 		return new Comment(object.getJSONObject("data"), getAccessToken());
 	}
@@ -425,7 +468,7 @@ public class InstagramSession {
 		map.put("comment_id", commentId);
 		String uriString = uriConstructor.constructUri(
 				UriFactory.Comments.DELETE_MEDIA_COMMENT, map, true);
-		object = (new DeleteMethod()
+		object = (makeDeleteMethod()
 					.setMethodURI(uriString)
 				).call().getJSON();
 
@@ -440,7 +483,7 @@ public class InstagramSession {
 		args.put("access_token", getAccessToken());
 		String uriString = uriConstructor.constructUri(
 				UriFactory.Likes.SET_LIKE, map, false);
-		object = (new PostMethod().setPostParameters(args)
+		object = (makePostMethod().setPostParameters(args)
 				.setMethodURI(uriString)).call().getJSON();
 		return object.getJSONObject("meta").getInt("code") == 200;
 	}
@@ -452,7 +495,7 @@ public class InstagramSession {
 		map.put("media_id", mediaId);
 		String uriString = uriConstructor.constructUri(
 				UriFactory.Likes.REMOVE_LIKE, map, true);
-		object = (new DeleteMethod().setMethodURI(uriString)).call().getJSON();
+		object = (makeDeleteMethod().setMethodURI(uriString)).call().getJSON();
 		return object.getJSONObject("meta").getInt("code") == 200;
 	}
 
@@ -463,7 +506,7 @@ public class InstagramSession {
 		map.put("tag_name", tagName);
 		String uriString = uriConstructor.constructUri(UriFactory.Tags.GET_TAG,
 				map, true);
-		object = (new GetMethod().setMethodURI(uriString)).call().getJSON();
+		object = (makeGetMethod().setMethodURI(uriString)).call().getJSON();
 		return new Tag(object.getJSONObject("data"), getAccessToken());
 	}
 
@@ -490,7 +533,7 @@ public class InstagramSession {
 		JSONObject object = null;
 		String uriString = uriConstructor.constructUri(
 				UriFactory.Tags.SEARCH_TAGS, null, true) + "&q=" + tagName;
-		object = (new GetMethod().setMethodURI(uriString)).call().getJSON();
+		object = (makeGetMethod().setMethodURI(uriString)).call().getJSON();
 		ArrayList<Tag> tags = new ArrayList<Tag>();
 		JSONArray tagItems = object.getJSONArray("data");
 		for (int i = 0; i < tagItems.length(); i++) {
@@ -505,7 +548,7 @@ public class InstagramSession {
 		map.put("location_id", locationId);
 		String uriString = uriConstructor.constructUri(
 				UriFactory.Locations.GET_LOCATION, map, true);
-		object = (new GetMethod().setMethodURI(uriString)).call().getJSON();
+		object = (makeGetMethod().setMethodURI(uriString)).call().getJSON();
 		return new Location(object.getJSONObject("data"), getAccessToken());
 	}
 

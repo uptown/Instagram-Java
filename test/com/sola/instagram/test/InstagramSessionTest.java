@@ -21,7 +21,9 @@ import org.junit.Test;
 public class InstagramSessionTest {
 
 	private InstagramSession getNewSession() {
-		return new InstagramSession(new AccessToken(Constants.ACCESS_TOKEN));
+		InstagramSession sess = new InstagramSession(new AccessToken(Constants.ACCESS_TOKEN));
+		//sess.setHttpProxy("180.180.121.156", 8080);
+		return sess;
 	}
 
 	@Test

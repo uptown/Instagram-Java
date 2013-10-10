@@ -8,13 +8,17 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.HttpResponse;
 
 public class GetMethod extends APIMethod {
-	DefaultHttpClient client;
+	
 	
 	public GetMethod() {
 		super();
 		this.type = "GET";
-		this.client = new DefaultHttpClient();
 	}
+	
+	public GetMethod(String proxyAddress, int proxyPort) {
+		super(proxyAddress, proxyPort);
+		this.type = "GET";
+	}	
 	
 	@Override
 	protected InputStream performRequest() {

@@ -5,20 +5,31 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import org.json.JSONException;
-import org.json.JSONTokener;
-import org.json.JSONObject;
-
-import com.sola.instagram.exception.InstagramException;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.HttpHost;
+import org.apache.http.conn.params.ConnRoutePNames;
 
 public abstract class APIMethod {
 	String methodUri;
 	String type;
 	String accessToken;
+	String proxyAddress;
+	int proxyPort;
+	DefaultHttpClient client;
 
 	abstract protected InputStream performRequest() throws Exception;
 
-	public APIMethod() {}
+	public APIMethod() {
+		this.client = new DefaultHttpClient();
+	}
+	
+	public APIMethod(String proxyAddress, int proxyPort) {
+		this.proxyAddress = proxyAddress;
+		this.proxyPort = proxyPort;
+		this.client = new DefaultHttpClient();
+		HttpHost proxy = new HttpHost(this.proxyAddress, this.proxyPort, "http");
+		this.client.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
+	}
 
 	public RequestResponse call() throws Exception {
 		String line = "", chunk;
@@ -27,6 +38,10 @@ public abstract class APIMethod {
 			line += chunk;
 		}
 		return new RequestResponse(line);
+	}
+	
+	public Boolean hasProxy() {
+		return proxyAddress != null;
 	}
 	
 	public String getType() {
