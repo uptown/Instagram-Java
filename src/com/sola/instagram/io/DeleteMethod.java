@@ -14,12 +14,6 @@ public class DeleteMethod extends APIMethod {
 		this.client = new DefaultHttpClient();
 	}
 	
-	public DeleteMethod(String proxyAddress, int proxyPort) {
-		super(proxyAddress, proxyPort);
-		this.type = "GET";
-		this.client = new DefaultHttpClient();
-	}
-	
 	@Override
 	protected InputStream performRequest() throws Exception {
 		HttpResponse response;

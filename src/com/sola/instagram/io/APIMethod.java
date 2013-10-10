@@ -13,24 +13,30 @@ public abstract class APIMethod {
 	String methodUri;
 	String type;
 	String accessToken;
-	String proxyAddress;
-	int proxyPort;
+	static String proxyAddress;
+	static int proxyPort;
 	DefaultHttpClient client;
 
 	abstract protected InputStream performRequest() throws Exception;
-
+	
 	public APIMethod() {
-		this.client = new DefaultHttpClient();
+		client = new DefaultHttpClient();
+		if(APIMethod.proxyAddress != null) {
+			System.out.println("using proxy " + APIMethod.proxyAddress + ":" + APIMethod.proxyPort);
+			HttpHost proxy = new HttpHost(APIMethod.proxyAddress, APIMethod.proxyPort, "http");
+			client.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
+		}
 	}
 	
-	public APIMethod(String proxyAddress, int proxyPort) {
-		this.proxyAddress = proxyAddress;
-		this.proxyPort = proxyPort;
-		this.client = new DefaultHttpClient();
-		HttpHost proxy = new HttpHost(this.proxyAddress, this.proxyPort, "http");
-		this.client.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
-	}
+	public static void setProxy(String proxyAddress, int proxyPort) {
+		APIMethod.proxyAddress = proxyAddress;
+		APIMethod.proxyPort = proxyPort;
+	}	
 
+	public static void removeProxy() {
+		APIMethod.proxyAddress = null;
+	}	
+	
 	public RequestResponse call() throws Exception {
 		String line = "", chunk;
 		BufferedReader rd = new BufferedReader(new InputStreamReader(performRequest()));

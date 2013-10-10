@@ -22,13 +22,6 @@ public class PostMethod extends APIMethod {
 		this.client = new DefaultHttpClient();
 	}
 	
-	public PostMethod(String proxyAddress, int proxyPort) {
-		super(proxyAddress, proxyPort);
-		this.type = "GET";
-		this.client = new DefaultHttpClient();
-	}
-	
-	
 	@Override
 	protected InputStream performRequest() {
 		HttpResponse response;

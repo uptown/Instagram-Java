@@ -15,11 +15,6 @@ public class GetMethod extends APIMethod {
 		this.type = "GET";
 	}
 	
-	public GetMethod(String proxyAddress, int proxyPort) {
-		super(proxyAddress, proxyPort);
-		this.type = "GET";
-	}	
-	
 	@Override
 	protected InputStream performRequest() {
 		System.out.println(this.methodUri);
