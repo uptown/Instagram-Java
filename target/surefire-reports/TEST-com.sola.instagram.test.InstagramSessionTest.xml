@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite failures="0" time="31.073" errors="0" skipped="0" tests="21" name="com.sola.instagram.test.InstagramSessionTest">
+<testsuite failures="0" time="41.784" errors="0" skipped="0" tests="21" name="com.sola.instagram.test.InstagramSessionTest">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="/Library/Java/JavaVirtualMachines/jdk1.7.0_11.jdk/Contents/Home/jre/lib"/>
@@ -44,7 +44,7 @@
     <property name="java.vm.specification.version" value="1.7"/>
     <property name="sun.arch.data.model" value="64"/>
     <property name="java.home" value="/Library/Java/JavaVirtualMachines/jdk1.7.0_11.jdk/Contents/Home/jre"/>
-    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher clean deploy"/>
+    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher clean verify --no-plugin-updates -Psonatype-oss-release"/>
     <property name="java.specification.vendor" value="Oracle Corporation"/>
     <property name="user.language" value="en"/>
     <property name="awt.toolkit" value="sun.lwawt.macosx.LWCToolkit"/>
@@ -62,25 +62,25 @@
     <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase time="1.231" classname="com.sola.instagram.test.InstagramSessionTest" name="testGetUserById"/>
-  <testcase time="0.607" classname="com.sola.instagram.test.InstagramSessionTest" name="testGetRecentPublishedMedia"/>
-  <testcase time="5.604" classname="com.sola.instagram.test.InstagramSessionTest" name="testGetFeed"/>
-  <testcase time="1.511" classname="com.sola.instagram.test.InstagramSessionTest" name="testGetLikedMedia"/>
-  <testcase time="0.361" classname="com.sola.instagram.test.InstagramSessionTest" name="testGetMedia"/>
-  <testcase time="0.796" classname="com.sola.instagram.test.InstagramSessionTest" name="testSearchMedia"/>
-  <testcase time="2.143" classname="com.sola.instagram.test.InstagramSessionTest" name="testGetPopularMedia"/>
-  <testcase time="0.766" classname="com.sola.instagram.test.InstagramSessionTest" name="testSearchUsersByName"/>
-  <testcase time="0.868" classname="com.sola.instagram.test.InstagramSessionTest" name="testGetFollows"/>
-  <testcase time="0.876" classname="com.sola.instagram.test.InstagramSessionTest" name="testGetFollowers"/>
-  <testcase time="0.232" classname="com.sola.instagram.test.InstagramSessionTest" name="testGetFollowRequests"/>
-  <testcase time="0.53" classname="com.sola.instagram.test.InstagramSessionTest" name="testGetRelationshipWith"/>
-  <testcase time="0.274" classname="com.sola.instagram.test.InstagramSessionTest" name="testModifyRelationship"/>
-  <testcase time="0.894" classname="com.sola.instagram.test.InstagramSessionTest" name="testPostComment"/>
-  <testcase time="1.014" classname="com.sola.instagram.test.InstagramSessionTest" name="testRemoveComment"/>
-  <testcase time="2.648" classname="com.sola.instagram.test.InstagramSessionTest" name="testLikingAndUnlikingMedia"/>
-  <testcase time="0.33" classname="com.sola.instagram.test.InstagramSessionTest" name="testGetTag"/>
-  <testcase time="4.73" classname="com.sola.instagram.test.InstagramSessionTest" name="testGetRecentMediaForTag"/>
-  <testcase time="0.408" classname="com.sola.instagram.test.InstagramSessionTest" name="testSearchTags"/>
-  <testcase time="0.47" classname="com.sola.instagram.test.InstagramSessionTest" name="testGetLocation"/>
-  <testcase time="4.773" classname="com.sola.instagram.test.InstagramSessionTest" name="testGetRecentMediaFromLocation"/>
+  <testcase time="1.572" classname="com.sola.instagram.test.InstagramSessionTest" name="testGetRecentPublishedMedia"/>
+  <testcase time="8.131" classname="com.sola.instagram.test.InstagramSessionTest" name="testGetFeed"/>
+  <testcase time="0.45" classname="com.sola.instagram.test.InstagramSessionTest" name="testGetLikedMedia"/>
+  <testcase time="0.87" classname="com.sola.instagram.test.InstagramSessionTest" name="testGetMedia"/>
+  <testcase time="2.071" classname="com.sola.instagram.test.InstagramSessionTest" name="testSearchMedia"/>
+  <testcase time="0.867" classname="com.sola.instagram.test.InstagramSessionTest" name="testGetPopularMedia"/>
+  <testcase time="0.894" classname="com.sola.instagram.test.InstagramSessionTest" name="testSearchUsersByName"/>
+  <testcase time="1.097" classname="com.sola.instagram.test.InstagramSessionTest" name="testGetFollows"/>
+  <testcase time="1.459" classname="com.sola.instagram.test.InstagramSessionTest" name="testGetFollowers"/>
+  <testcase time="1.106" classname="com.sola.instagram.test.InstagramSessionTest" name="testGetFollowRequests"/>
+  <testcase time="0.861" classname="com.sola.instagram.test.InstagramSessionTest" name="testGetRelationshipWith"/>
+  <testcase time="2.334" classname="com.sola.instagram.test.InstagramSessionTest" name="testModifyRelationship"/>
+  <testcase time="1.34" classname="com.sola.instagram.test.InstagramSessionTest" name="testPostComment"/>
+  <testcase time="1.128" classname="com.sola.instagram.test.InstagramSessionTest" name="testRemoveComment"/>
+  <testcase time="1.748" classname="com.sola.instagram.test.InstagramSessionTest" name="testLikingAndUnlikingMedia"/>
+  <testcase time="2.174" classname="com.sola.instagram.test.InstagramSessionTest" name="testGetTag"/>
+  <testcase time="6.462" classname="com.sola.instagram.test.InstagramSessionTest" name="testGetRecentMediaForTag"/>
+  <testcase time="0.386" classname="com.sola.instagram.test.InstagramSessionTest" name="testSearchTags"/>
+  <testcase time="0.645" classname="com.sola.instagram.test.InstagramSessionTest" name="testGetLocation"/>
+  <testcase time="2.017" classname="com.sola.instagram.test.InstagramSessionTest" name="testGetUserById"/>
+  <testcase time="4.163" classname="com.sola.instagram.test.InstagramSessionTest" name="testGetRecentMediaFromLocation"/>
 </testsuite>
