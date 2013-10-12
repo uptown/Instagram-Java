@@ -358,8 +358,7 @@ public class InstagramSession {
 		return object.getJSONObject("meta").getInt("code") == 200;
 	}
 
-	public Comment postComment(String mediaId, String text)
-			throws Exception {
+	public Comment postComment(String mediaId, String text) throws Exception {
 		HashMap<String, Object> map  = new HashMap<String, Object>();
 		HashMap<String, Object> args = new HashMap<String, Object>();
 		map.put("media_id", mediaId);
@@ -371,8 +370,7 @@ public class InstagramSession {
 		return new Comment(object.getJSONObject("data"), getAccessToken());
 	}
 
-	public boolean removeComment(String mediaId, String commentId)
-			throws Exception {
+	public boolean removeComment(String mediaId, String commentId) throws Exception {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("media_id", mediaId);
 		map.put("comment_id", commentId);
@@ -400,11 +398,10 @@ public class InstagramSession {
 	}
 
 	public Tag getTag(String tagName) throws Exception {
-		JSONObject object = null;
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("tag_name", tagName);
 		String uri = uriConstructor.constructUri(UriFactory.Tags.GET_TAG, map, true);
-		object = (new GetMethod(uri)).call().getJSON();
+		JSONObject object = (new GetMethod(uri)).call().getJSON();
 		return new Tag(object.getJSONObject("data"), getAccessToken());
 	}
 
