@@ -96,6 +96,15 @@ Here are some common endpoint calls. Please refer to the javadoc at `/doc/com/so
   // POST /users/3/relationship
   session.modifyRelationship(targetUserId, Relationship.Action.UNFOLLOW)
 ```
+
+#### Using a proxy
+```java 
+    //routes api requests through a proxy
+	session.setHttpProxy("180.180.121.156", 8080);
+    //remove the proxy
+	session.removeHttpProxy();	
+```
+
 ## License
 Copyright (c) 2013 Sola Ogunsakin
 Licensed under the MIT license.
