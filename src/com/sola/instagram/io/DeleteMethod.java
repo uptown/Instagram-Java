@@ -1,18 +1,19 @@
 package com.sola.instagram.io;
 import org.apache.http.client.methods.HttpDelete;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.HttpResponse;
 
 import java.io.InputStream;
 
 public class DeleteMethod extends APIMethod {
-	DefaultHttpClient client;
 	
 	public DeleteMethod() {
 		super();
-		this.type = "GET";
-		this.client = new DefaultHttpClient();
 	}
+	
+	public DeleteMethod(String methodUri) {
+		super(methodUri);
+		this.type = "GET";
+	}		
 	
 	@Override
 	protected InputStream performRequest() throws Exception {

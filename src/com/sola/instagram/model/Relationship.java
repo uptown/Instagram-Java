@@ -2,7 +2,6 @@ package com.sola.instagram.model;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.sola.instagram.exception.InstagramException;
 
 public class Relationship extends InstagramModel {
 	

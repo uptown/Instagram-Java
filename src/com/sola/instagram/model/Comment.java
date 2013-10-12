@@ -3,8 +3,6 @@ package com.sola.instagram.model;
 import org.json.JSONObject;
 import org.json.JSONException;
 
-import com.sola.instagram.exception.InstagramException;
-
 public class Comment extends InstagramModel {
 	String createdTimestamp;
 	String text;

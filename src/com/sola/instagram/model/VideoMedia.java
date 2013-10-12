@@ -1,7 +1,5 @@
 package com.sola.instagram.model;
 
-import java.util.List;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 

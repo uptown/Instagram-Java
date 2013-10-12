@@ -1,14 +1,9 @@
 package com.sola.instagram.test;
 
-import static org.junit.Assert.*;
-
-import java.util.List;
 import java.util.Random;
 
 import com.sola.instagram.InstagramSession;
 import com.sola.instagram.auth.AccessToken;
-import com.sola.instagram.exception.InstagramException;
-import com.sola.instagram.model.Comment;
 import com.sola.instagram.model.Media;
 import com.sola.instagram.model.Relationship;
 import com.sola.instagram.model.User;

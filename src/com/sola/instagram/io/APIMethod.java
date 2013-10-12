@@ -1,7 +1,6 @@
 package com.sola.instagram.io;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
@@ -21,11 +20,16 @@ public abstract class APIMethod {
 	
 	public APIMethod() {
 		client = new DefaultHttpClient();
-		if(APIMethod.proxyAddress != null) {
-			System.out.println("using proxy " + APIMethod.proxyAddress + ":" + APIMethod.proxyPort);
+		if(APIMethod.hasProxy()) {
+			System.out.println("using proxy -> " + APIMethod.proxyAddress + ":" + APIMethod.proxyPort);
 			HttpHost proxy = new HttpHost(APIMethod.proxyAddress, APIMethod.proxyPort, "http");
 			client.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
 		}
+	}
+	
+	public APIMethod(String methodUri) {
+		this();
+		setMethodURI(methodUri);
 	}
 	
 	public static void setProxy(String proxyAddress, int proxyPort) {
@@ -38,15 +42,17 @@ public abstract class APIMethod {
 	}	
 	
 	public RequestResponse call() throws Exception {
-		String line = "", chunk;
+		System.out.println(this.methodUri);
+		StringBuilder sb  = new StringBuilder();
 		BufferedReader rd = new BufferedReader(new InputStreamReader(performRequest()));
+		String chunk;
 		while ((chunk = rd.readLine()) != null) {
-			line += chunk;
+			sb.append(chunk);
 		}
-		return new RequestResponse(line);
+		return new RequestResponse(sb.toString());
 	}
 	
-	public Boolean hasProxy() {
+	public static Boolean hasProxy() {
 		return proxyAddress != null;
 	}
 	

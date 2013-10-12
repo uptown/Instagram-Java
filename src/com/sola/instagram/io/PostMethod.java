@@ -8,26 +8,28 @@ import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
 
 public class PostMethod extends APIMethod {
 	Map<String, Object> postParameters;
-	DefaultHttpClient client;
 	
 	public PostMethod() {
 		super();
-		this.type = "GET";
-		this.client = new DefaultHttpClient();
+		this.type = "POST";
 	}
+
+	public PostMethod(String methodUri) {
+		super(methodUri);
+		this.type = "POST";
+	}	
 	
 	@Override
 	protected InputStream performRequest() {
 		HttpResponse response;
 		HttpPost post = new HttpPost(this.methodUri);
 		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
-		for (Map.Entry<String, Object> arg : postParameters.entrySet()) {
+		for (Map.Entry<String, Object> arg : getPostParameters().entrySet()) {
 			nameValuePairs.add(new BasicNameValuePair(arg.getKey(), arg.getValue().toString()));
 		}
 		InputStream stream = null;

@@ -4,7 +4,6 @@ import java.util.HashMap;
 import org.json.JSONObject;
 import org.json.JSONException;	
 
-import com.sola.instagram.exception.InstagramException;
 import com.sola.instagram.io.GetMethod;
 import com.sola.instagram.io.UriFactory;
 import com.sola.instagram.util.UriConstructor;
