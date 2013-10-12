@@ -12,16 +12,14 @@ public class DeleteMethod extends APIMethod {
 	
 	public DeleteMethod(String methodUri) {
 		super(methodUri);
-		this.type = "GET";
+		this.type = "DELETE";
 	}		
 	
 	@Override
 	protected InputStream performRequest() throws Exception {
-		HttpResponse response;
-		HttpDelete delete = new HttpDelete(this.methodUri);
-		InputStream stream = null;
-		response = client.execute(delete);
-		stream = response.getEntity().getContent();
+		HttpDelete   delete   = new HttpDelete(this.methodUri);
+		HttpResponse response = client.execute(delete);
+		InputStream  stream   = response.getEntity().getContent();
 		return stream;
 	}
 

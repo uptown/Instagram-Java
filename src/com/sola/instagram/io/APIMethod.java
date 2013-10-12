@@ -34,7 +34,7 @@ public abstract class APIMethod {
 	
 	public static void setProxy(String proxyAddress, int proxyPort) {
 		APIMethod.proxyAddress = proxyAddress;
-		APIMethod.proxyPort = proxyPort;
+		APIMethod.proxyPort    = proxyPort;
 	}	
 
 	public static void removeProxy() {
