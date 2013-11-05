@@ -1,7 +1,7 @@
 package com.sola.instagram.model;
 
 /*
-Copyright (c) 2012 Sola Ogunsakin
+Copyright (c) 2013 Sola Ogunsakin
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -116,7 +116,7 @@ import com.sola.instagram.util.UriConstructor;
  * 			}
  * }</pre>
  * @author Sola Ogunsakin
- * @version 2012-08-22
+ * @version 2013-10-13
  */
 public class Media extends InstagramModel {
 
@@ -207,6 +207,17 @@ public class Media extends InstagramModel {
 	 * Users tagged in photo
 	 */
 	protected List<UserPhotoTag> usersInPhoto;
+
+	/**
+	 * Number of likes for this media
+	 */
+	protected int likeCount;
+	
+	
+	/**
+	 * Number of comments for this media
+	 */
+	protected int commentCount;
 	
 	/**
 	 * Used to construct formatted api urls
@@ -222,43 +233,49 @@ public class Media extends InstagramModel {
 	public Media(JSONObject obj, String accessToken) throws JSONException {
 		super(obj, accessToken);
 		if(!obj.isNull("caption")) 
-			this.setCaption(this.new Caption(obj.getJSONObject("caption")));			
-		this.setCreatedTimestamp(obj.getString("created_time"));
-		this.setFilter(obj.optString("filter"));
-		this.setLink(obj.optString("link"));
-		this.setId(obj.getString("id"));
-		this.setType(obj.getString("type"));
-		this.setUser(new User(obj.getJSONObject("user"), accessToken));
-		this.setUserHasLikedMedia(obj.getBoolean("user_has_liked"));
+			setCaption(this.new Caption(obj.getJSONObject("caption")));			
+		setCreatedTimestamp(obj.getString("created_time"));
+		setFilter(obj.optString("filter"));
+		setLink(obj.optString("link"));
+		setId(obj.getString("id"));
+		setType(obj.getString("type"));
+		setUser(new User(obj.getJSONObject("user"), accessToken));
+		setUserHasLikedMedia(obj.getBoolean("user_has_liked"));
 		
 	 	JSONObject images = obj.getJSONObject("images");
-	 	this.setLowResolutionImage(this.new Image(images.getJSONObject("low_resolution")));
-	 	this.setThumbnailImage(this.new Image(images.getJSONObject("thumbnail")));
-	 	this.setStandardResolutionImage(this.new Image(images.getJSONObject("standard_resolution")));
+	 	setLowResolutionImage(this.new Image(images.getJSONObject("low_resolution")));
+	 	setThumbnailImage(this.new Image(images.getJSONObject("thumbnail")));
+	 	setStandardResolutionImage(this.new Image(images.getJSONObject("standard_resolution")));
 		
-		if(!obj.isNull("location"))
-			this.setLocation(new Location(obj.getJSONObject("location"), accessToken));
+		if(!obj.isNull("location")) {
+			setLocation(new Location(obj.getJSONObject("location"), accessToken));
+		}
 		
-		ArrayList<String> tags = new ArrayList<String>();
+		
 		JSONArray tagStrings   = obj.getJSONArray("tags");
+		ArrayList<String> tags = new ArrayList<String>();
 		for(int i = 0; i < tagStrings.length(); i++) {
 			tags.add(tagStrings.getString(i));
 		}
-		this.setTags(tags);
+		setTags(tags);
 
-		ArrayList<UserPhotoTag> userPhotoTags = new ArrayList<UserPhotoTag>();
+		
 		JSONArray jsonUserPhotoTags = obj.optJSONArray("users_in_photo");
+		ArrayList<UserPhotoTag> userPhotoTags = new ArrayList<UserPhotoTag>();
 		if(jsonUserPhotoTags != null) {
 			for(int i = 0; i < jsonUserPhotoTags.length(); i++) {
 				userPhotoTags.add(
-						new UserPhotoTag(jsonUserPhotoTags.getJSONObject(i))
+					new UserPhotoTag(jsonUserPhotoTags.getJSONObject(i))
 				);
 			}
-			this.setUsersInPhoto(userPhotoTags);
-		} else {
-			this.setUsersInPhoto(new ArrayList<UserPhotoTag>());
-		}
+		} 
+		setUsersInPhoto(userPhotoTags);
 		
+		JSONObject likes = obj.getJSONObject("likes");
+		setLikeCount(likes.getInt("count"));
+		
+		JSONObject comments = obj.getJSONObject("comments");
+		setCommentCount(comments.getInt("count"));		
 		uriConstructor = new UriConstructor(getAccessToken());
 	}
 	
@@ -297,6 +314,31 @@ public class Media extends InstagramModel {
 	}
 
     /**
+     * Returns the number of likes for this media
+     * @return The number of likes for this media 
+     */
+	public int getLikeCount() {
+		return likeCount;
+	}
+
+	private void setLikeCount(int count) {
+		likeCount = count;
+	}	
+	
+    /**
+     * Returns the number of comments for this media
+     * @return The number of comments for this media 
+     */
+	public int getCommentCount() {
+		return commentCount;
+	}
+	
+
+	private void setCommentCount(int count) {
+		commentCount = count;
+	}	
+	
+    /**
      * Returns the Caption object representing this media's caption
      * @return The Caption object representing this media's caption 
      */
@@ -325,13 +367,10 @@ public class Media extends InstagramModel {
 		if(comments == null) {
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			map.put("media_id", getId());
-			String uri = uriConstructor.constructUri(
-								UriFactory.Comments.GET_MEDIA_COMMENTS, map, true);
-			JSONObject object = (new GetMethod()
-								.setMethodURI(uri)
-								).call().getJSON();
-			ArrayList<Comment> comments =  new ArrayList<Comment>();
-			JSONArray commentObjects = object.getJSONArray("data");
+			String uri = uriConstructor.construct(UriFactory.Comments.GET_MEDIA_COMMENTS, map, true);
+			JSONObject object = (new GetMethod(uri)).call().getJSON();
+			JSONArray commentObjects    = object.getJSONArray("data");
+			ArrayList<Comment> comments = new ArrayList<Comment>();
 			for(int i = 0; i < commentObjects.length(); i++) {
 				comments.add(new Comment(commentObjects.getJSONObject(i), accessToken));
 			}
@@ -462,15 +501,10 @@ public class Media extends InstagramModel {
 	public List<User> getLikers() throws Exception {
 		if(likers == null) {
 			try {
-				
 				HashMap<String, Object> map = new HashMap<String, Object>();
 				map.put("media_id", getId());
-				String uri = uriConstructor.constructUri(
-								UriFactory.Likes.GET_LIKERS, map, true);
-				JSONObject object = (
-									new GetMethod()
-									.setMethodURI(uri)
-									).call().getJSON();
+				String uri = uriConstructor.construct(UriFactory.Likes.GET_LIKERS, map, true);
+				JSONObject object      = (new GetMethod(uri)).call().getJSON();
 				ArrayList<User> likers =  new ArrayList<User>();
 				JSONArray likerUserObjects = object.getJSONArray("data");
 				for(int i = 0; i < likerUserObjects.length(); i++) {
