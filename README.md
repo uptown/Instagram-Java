@@ -7,7 +7,7 @@ Java wrapper for Instagram's API v1
 <dependency>
     <groupId>com.github.sola92</groupId>
     <artifactId>instagram-java</artifactId>
-    <version>1.3.5</version>
+    <version>1.3.6</version>
 </dependency>
 ```
 
