@@ -367,7 +367,7 @@ public class Media extends InstagramModel {
 		if(comments == null) {
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			map.put("media_id", getId());
-			String uri = uriConstructor.construct(UriFactory.Comments.GET_MEDIA_COMMENTS, map, true);
+			String uri = uriConstructor.constructUri(UriFactory.Comments.GET_MEDIA_COMMENTS, map, true);
 			JSONObject object = (new GetMethod(uri)).call().getJSON();
 			JSONArray commentObjects    = object.getJSONArray("data");
 			ArrayList<Comment> comments = new ArrayList<Comment>();
@@ -503,7 +503,7 @@ public class Media extends InstagramModel {
 			try {
 				HashMap<String, Object> map = new HashMap<String, Object>();
 				map.put("media_id", getId());
-				String uri = uriConstructor.construct(UriFactory.Likes.GET_LIKERS, map, true);
+				String uri = uriConstructor.constructUri(UriFactory.Likes.GET_LIKERS, map, true);
 				JSONObject object      = (new GetMethod(uri)).call().getJSON();
 				ArrayList<User> likers =  new ArrayList<User>();
 				JSONArray likerUserObjects = object.getJSONArray("data");
