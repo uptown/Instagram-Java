@@ -8,7 +8,7 @@
     </parent>
     <groupId>com.github.sola92</groupId>
     <artifactId>instagram-java</artifactId>
-    <version>1.3.7-SNAPSHOT</version>
+    <version>1.3.6</version>
     
     <name>Instagram for Java</name>
     <url>https://github.com/sola92/Instagram-Java</url>
@@ -27,11 +27,16 @@
     </properties>
 
     <dependencies>
-	    <dependency>
-	      <groupId>com.google.http-client</groupId>
-	      <artifactId>google-http-client</artifactId>
-	      <version>1.17.0-rc</version>
-	    </dependency>        
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.2.1</version>
+        </dependency>
+	<dependency>
+		<groupId>org.apache.httpcomponents</groupId>
+		<artifactId>httpcore</artifactId>
+		<version>4.2.4</version>
+	</dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
