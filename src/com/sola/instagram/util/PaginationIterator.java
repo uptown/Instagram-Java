@@ -46,8 +46,11 @@ public class PaginationIterator<E> implements Iterator<E> {
 		JSONObject object = (new GetMethod().setMethodURI(nextUri))
 				.call().getJSON();
 		JSONObject pagination = object.optJSONObject("pagination");
-		nextUri = pagination == null ? null : pagination.optString("next_url");		
-		handleLoad(object.optJSONArray("data"));
+		nextUri = pagination == null ? null : pagination.optString("next_url");
+		JSONArray data = object.optJSONArray("data");
+		if(data != null) {
+			handleLoad(data);
+		}
 	}
 
 	public void handleLoad(JSONArray data) throws JSONException {

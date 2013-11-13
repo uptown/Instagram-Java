@@ -27,6 +27,7 @@ public class InstagramSessionTest {
 		 * Test that no Exception is thrown for a valid user id
 		 */
 		getNewSession().getUserById(Constants.VALID_USER_ID);
+		PaginatedCollection<Media> media = getNewSession().getRecentMediaForTag("iphone");
 	}
 
 	@Test
