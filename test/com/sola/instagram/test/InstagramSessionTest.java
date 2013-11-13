@@ -28,7 +28,7 @@ public class InstagramSessionTest {
 		 */
 		getNewSession().getUserById(Constants.VALID_USER_ID);
 		PaginatedCollection<Media> media = getNewSession().getRecentMediaForTag("#iphone");
-	}
+	} 
  
 	@Test
 	public void testGetRecentPublishedMedia() throws Exception {
