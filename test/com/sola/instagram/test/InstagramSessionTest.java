@@ -27,7 +27,6 @@ public class InstagramSessionTest {
 		 * Test that no Exception is thrown for a valid user id
 		 */
 		getNewSession().getUserById(Constants.VALID_USER_ID);
-		PaginatedCollection<Media> media = getNewSession().getRecentMediaForTag("#iphone");
 	} 
  
 	@Test
@@ -193,6 +192,7 @@ public class InstagramSessionTest {
 	@Test
 	public void testGetRecentMediaForTag() throws Exception {
 		InstagramSession session = getNewSession();
+		getNewSession().getRecentMediaForTag("#iphone");
 		PaginatedCollection<Media> media = session.getRecentMediaForTag("yolo");
 		int i = 0;
 		for(Media _media: media) {
