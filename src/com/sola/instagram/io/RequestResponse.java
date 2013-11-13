@@ -12,7 +12,7 @@ public class RequestResponse {
 	}
 	
 	public JSONObject getJSON() {
-		JSONObject res =null;
+		JSONObject res = null;	
 		try {
 			res = new JSONObject(new JSONTokener(getResponseString()));
 		} catch (JSONException e) {

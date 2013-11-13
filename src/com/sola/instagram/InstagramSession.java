@@ -406,6 +406,7 @@ public class InstagramSession {
 	}
 
 	public PaginatedCollection<Media> getRecentMediaForTag(String tagName) throws Exception {
+		tagName = tagName.replaceAll("^#*", "");
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("tag_name", tagName);
 		String uri = uriConstructor.constructUri(UriFactory.Tags.GET_RECENT_TAGED_MEDIA, map, true);

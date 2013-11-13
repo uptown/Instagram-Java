@@ -1,5 +1,6 @@
 package com.sola.instagram.util;
 
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,10 +27,12 @@ public class UriConstructor {
 	public String constructUri(String uri, HashMap<String, Object> map, boolean addAccessToken) {
 		try{
 			for (Map.Entry<String, Object> arg : map.entrySet()) {
-				uri = uri.replaceAll("\\{"+arg.getKey()+"\\}", arg.getValue().toString());
+				String key = URLEncoder.encode(arg.getKey(), "UTF-8");
+				String value = URLEncoder.encode(arg.getValue().toString(), "UTF-8");
+				uri = uri.replaceAll("\\{"+ key + "\\}", value);
 			}
 		}
-		catch(NullPointerException e) {}
+		catch(Exception e) {}
 		if(addAccessToken) {
 			uri += "?access_token=" + getAccessToken();
 		}
