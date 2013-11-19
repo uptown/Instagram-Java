@@ -58,7 +58,7 @@ public class InstagramAuthentication {
 		args.put("client_id", getClientId());
 		args.put("redirect_uri", getRedirectUri());
 		args.put("response_type", "code");
-		args.put("scope", "likes+comments+relationships+basic");
+		args.put("scope", getScope());
 		return (new UriConstructor()).constructUri(
 				UriFactory.Auth.USER_AUTHORIZATION, args, false);
 	}
