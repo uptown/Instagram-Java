@@ -4,6 +4,7 @@ import java.util.Random;
 
 import com.sola.instagram.InstagramSession;
 import com.sola.instagram.auth.AccessToken;
+import com.sola.instagram.auth.InstagramAuthentication;
 import com.sola.instagram.model.Media;
 import com.sola.instagram.model.Relationship;
 import com.sola.instagram.model.User;
@@ -42,6 +43,17 @@ public class InstagramSessionTest {
 		}		
 	}
 
+	@Test
+	public void testAuth() throws Exception {
+		InstagramAuthentication auth =  new InstagramAuthentication();
+		String authUrl = auth.setRedirectUri("your_redirect_url")
+		                     .setClientSecret("your_app_secrect")
+		                     .setClientId("your_client_id")
+		                     .setScope("comments+likes")
+		                     .getAuthorizationUri();	
+		System.out.print(authUrl);
+	}
+	
 	@Test
 	public void testGetFeed() throws Exception, JSONException {
 		InstagramSession session = this.getNewSession();
